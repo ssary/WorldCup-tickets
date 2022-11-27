@@ -1,0 +1,78 @@
+{
+    "type": "object",
+    "description": "Collection that contains the matches details located in Shop Microservice",
+    "title": "World Final Match",
+    "required": ["MatchNumber","RoundNumber","Location","DateUtc","StadiumCapacity"],
+    "properties": {
+        "MatchNumber": {
+            "description": "The number of the match based on order and uniquely identify the match.",
+            "type": "number"
+        },
+        "RoundNumber": {
+            "description": "The round which the match is currently in: 1: group stage till 7: finals",
+            "type": "number",
+            "Minimum": 1,
+            "Maximum": 7
+        },
+        "DateUtc": {
+            "description": "The Date of the match",
+            "type": "string",
+            "format": "date-time",
+            "examples": [
+                "2022-11-23T13:00:00Z"
+            ]
+        },
+        "Location": {
+            "description": "The stadium name where the match is held in",
+            "type": "string",
+            "examples": [
+                "Ahmad Bin Ali Stadium"
+            ]
+        },
+        "StadiumCapacity": {
+            "description": "number of people that the stadium can holds",
+            "type": "number",
+            "Minimum":0 
+        },
+        "HomeTeam": {
+            "description": "First/Host Team name and most probably the match is played on it's playground",
+            "type": "string",
+            "examples": [
+                "Brazil"
+            ]
+        },
+        "AwayTeam": {
+            "description": "Second/road team name",
+            "type": "string",
+            "examples": [
+                "Saudi Arabia"
+            ]
+        },
+        "HomeTeamGroup": {
+            "description": "The number/id of the group that contains the home team",
+            "type": "string"
+        },
+        "AwayTeamGroup": {
+            "description": "The number/id of the group group that contains the away team",
+            "type": "string"
+        },
+        "HomeTeamScore": {
+            "description": "The number of goals scored by home team",
+            "type": "number",
+            "Minimum": 0
+        },
+        "AwayTeamScore": {
+            "description": "The number goals scored by away team",
+            "type": "number",
+            "Minimum": 0
+        },
+        "Tickets": {
+            "description": "All the tickets serialNumber inside this match stadium",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "uniqueItems": true
+        }
+    }
+}

@@ -1,0 +1,75 @@
+{
+    "title": "Ticket of Soccer Match",
+    "description":"Collection that contains the tickets details in the reservation microservice.",
+    "type": "object",
+    "required": [
+        "SerialNumber",
+        "SeatNumber",
+        "Status",
+        "Price",
+        "MatchNumber"
+    ],
+    "properties": {
+        "SerialNumber": {
+            "description": "Ticket identifier and translates into a bar code to scan at the enterance",
+            "type": "string"
+        },
+        "SeatNumber": {
+            "description": "Postition of the seat",
+            "type": "number"
+        },
+        "Status": {
+            "description": "the status of ticket",
+            "type": "string",
+            "enum": [
+                "AVAILABLE",
+                "EXPIRED",
+                "RESERVED"
+            ]
+        },
+        "Buyer": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "name": {
+                    "description": "Name of the ticket buyer",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "Email of the ticket buyer",
+                    "type": "string",
+                    "format": "email"
+                },
+                "phone": {
+                    "description": "Phone number of the ticket buyer",
+                    "type": "string"
+                }
+            }
+        },
+        "Price": {
+            "description": "Price of the ticket including VAT",
+            "type": "number"
+        },
+        "MatchNumber": {
+            "description": "Identifier of the match that the ticket can access/enter",
+            "type": "number"
+        }
+    },
+    "if": {
+        "properties": {
+            "Status": {
+                "const": "RESERVED"
+            }
+        },
+        "required": [
+            "Status"
+        ]
+    },
+    "then": {
+        "required": [
+            "Buyer"
+        ]
+    }
+}
