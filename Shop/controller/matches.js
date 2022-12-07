@@ -41,60 +41,38 @@ export const addMatches = async (req, res) => {
 
 
 }
-export const updateTeams = async (req, res) => {
-
-    let { MatchNumber, HomeTeam, AwayTeam } = req.body;
-    try {
-        await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, { HomeTeam: HomeTeam }, { AwayTeam: AwayTeam });
-        res.status(200);
-    }
-    catch (e) {
-        res.status(404).json({ message: e.message });
-
-    }
-
-}
-export const updateScores = async (req, res) => {
-
-    let { MatchNumber, HomeTeamScore, AwayTeamScore } = req.body;
-    try {
-        await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, { HomeTeamScore: HomeTeamScore }, { AwayTeam: AwayTeamScore });
-        res.status(200);
-    }
-    catch (e) {
-        res.status(404).json({ message: e.message });
-
-    }
-
-}
-export const updateLocation = async (req, res) => {
-
-    let { MatchNumber, Location } = req.body;
-    try {
-        await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, { Location: Location });
-        res.status(200);
-    }
-    catch (e) {
-        res.status(404).json({ message: e.message });
-
-    }
-
-}
 export const updateMatch = async (req, res) => {
+    const MatchNumber = req.params.MatchNumber
+    try {
+        const updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
+            $set: req.body,
+        },{new:true});
 
-    let { MatchNumber, buy } = req.body
-    const increment = (buy?1:-1)
-        try{
-        await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
+        res.status(200).json(updatedMatch)
+    } catch (err) {
+        res.status(400).json(err)
+    }
+
+
+}
+export const updateMatchTickets = async (req, res) => {
+
+    var { buy, MatchNumber } = req.body
+    const increment = (buy ? -1 : 1)
+    try {
+        var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
             $inc: {
                 Tickets: increment
             }
-        });
-        res.status(200);
+        },{new:true});
+        if(updatedMatch.Tickets > updatedMatch.StadiumCapacity){
+            await Matches.findOneAndUpdate({ MatchNumber: updatedMatch.MatchNumber},{Tickets:updatedMatch.StadiumCapacity})
+            throw new Error("Maximum number of tickets reached");
+        }
+        res.status(200).json(updatedMatch);
     }
-    catch(e){
-        res.status(404).json({message: e.message});
+    catch (e) {
+        res.status(400).json({ message: e.message });
     }
- 
 
 }
