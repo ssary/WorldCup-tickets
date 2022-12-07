@@ -3,8 +3,8 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv'; 
-import Matches from './model/shop.js';
-import router from "./routes/shop.js";
+import Matches from './Models/Matches.js';
+import router from "./routes/matches.js";
 const app = express();
 dotenv.config();
 
