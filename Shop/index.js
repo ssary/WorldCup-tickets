@@ -1,27 +1,26 @@
-const express = require("express");
+import express from "express";
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import router from "./routes/matches.js";
 const app = express();
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 dotenv.config();
-const shopRoute = require("./routes/matches")
-const cors = require("cors");
 
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => console.log("DB connected Successfully"))
-  .catch((err) => {
-    console.log(err);
-  });
+app.use(bodyParser.json({extended: true}));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
-app.use(cors())
-app.use(express.json());
-app.use("/api/matches", shopRoute);
+app.use('/api/matches', router)
 
+const PORT = process.env.PORT || 5001;
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log("Backend server is running!");
-});
+const mongooseOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}
 
-app.get("/", function (req, res) {
-  res.send("Hello world");
-});
+const handleServerStartup = () => {
+    app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
+}
+await mongoose.connect(process.env.CONNECTION_URL, mongooseOptions, handleServerStartup)
