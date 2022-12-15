@@ -3,37 +3,37 @@ const { Schema } = mongoose;
 
 
 const matchSchema = new Schema({
-  MatchNumber: {
+  matchNumber: {
     type: Number
     , required: true,
     unique: true
   },
-  RoundNumber: {
+  roundNumber: {
     type: Number,
     required: true,
     min: 1,
     max: 7
   },
-  DateUtc: {
+  dateUtc: {
     type: Date,
     required: true
   },
-  Location: {
+  location: {
     type: String,
     required: true
   },
-  HomeTeam: {
+  homeTeam: {
     type: String,
   },
-  AwayTeam: {
+  awayTeam: {
     type: String
   },
-  HomeTeamScore: {
+  homeTeamScore: {
     type: Number,
     min: 0,
     default: 0
   },
-  AwayTeamScore: {
+  awayTeamScore: {
     type: Number,
     min: 0,
     default: 0
@@ -48,6 +48,20 @@ const matchSchema = new Schema({
       price: { type: Number, default: 125 }
     }, category3: {
       count: { type: Number },
+      price: { type: Number, default: 195 }
+    }
+
+  },
+  pending: {
+    category1: {
+      count: { type: Number,default:0 },
+      price: { type: Number, default: 75 }
+    },
+    category2: {
+      count: { type: Number,default:0 },
+      price: { type: Number, default: 125 }
+    }, category3: {
+      count: { type: Number,default:0},
       price: { type: Number, default: 195 }
     }
 
