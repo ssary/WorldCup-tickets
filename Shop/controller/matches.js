@@ -13,7 +13,7 @@ export const getMatch = async (req, res) => {
 
     try {
         const MatchNumber = req.params.MatchNumber
-        const Match = await Matches.findOne({ MatchNumber: MatchNumber })
+        const Match = await Matches.findOne({ matchNumber: MatchNumber })
         res.status(200).json(Match)
     }
     catch (e) {
@@ -44,9 +44,9 @@ export const addMatches = async (req, res) => {
 export const updateMatch = async (req, res) => {
     const MatchNumber = req.params.MatchNumber
     try {
-        const updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
+        const updatedMatch = await Matches.findOneAndUpdate({ matchNumber: MatchNumber }, {
             $set: req.body,
-        },{new:true});
+        }, { new: true });
 
         res.status(200).json(updatedMatch)
     } catch (err) {
@@ -55,24 +55,44 @@ export const updateMatch = async (req, res) => {
 
 
 }
-export const updateMatchTickets = async (req, res) => {
+export const ReserveMatchTickets = async (req, res) => {
 
-    var { buy, MatchNumber } = req.body
-    const increment = (buy ? -1 : 1)
+        var {MatchNumber,category,quantity } = req.body
+    if (reserve) {
+        try {
+            await Matches.findOneAndUpdate({ "matchNumber": MatchNumber }, {
+
+                $inc: {
+                    [`availability.${category}.count`]: quantity * -1
+                }
+            }, { new: true })
+            var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
+                $inc: {
+                    [`pending.${category}.count`]: quantity * -1
+                }
+            }, { new: true });
+            res.status(200).json(updatedMatch);
+        }
+        catch (e) {
+            res.status(400).json({ message: e.message });
+        }
+    }
+    
+       
+}
+export const HoldMatchTickets = async (req, res) => {
+    
+    var {MatchNumber,category,quantity } = req.body
     try {
         var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
             $inc: {
-                Tickets: increment
+                [`pending.${category}.count`]: quantity
             }
-        },{new:true});
-        if(updatedMatch.Tickets > updatedMatch.StadiumCapacity){
-            await Matches.findOneAndUpdate({ MatchNumber: updatedMatch.MatchNumber},{Tickets:updatedMatch.StadiumCapacity})
-            throw new Error("Maximum number of tickets reached");
-        }
+        }, { new: true });
         res.status(200).json(updatedMatch);
     }
     catch (e) {
         res.status(400).json({ message: e.message });
     }
-
 }
+
