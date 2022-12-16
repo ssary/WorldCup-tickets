@@ -58,17 +58,16 @@ export const updateMatch = async (req, res) => {
 export const ReserveMatchTickets = async (req, res) => {
 
         var {MatchNumber,category,quantity } = req.body
-    if (reserve) {
         try {
             await Matches.findOneAndUpdate({ "matchNumber": MatchNumber }, {
 
                 $inc: {
-                    [`availability.${category}.count`]: quantity * -1
+                    [`availability.category${category}.count`]: quantity * -1
                 }
             }, { new: true })
             var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
                 $inc: {
-                    [`pending.${category}.count`]: quantity * -1
+                    [`pending.category${category}.count`]: quantity * -1
                 }
             }, { new: true });
             res.status(200).json(updatedMatch);
@@ -76,7 +75,7 @@ export const ReserveMatchTickets = async (req, res) => {
         catch (e) {
             res.status(400).json({ message: e.message });
         }
-    }
+    
     
        
 }
@@ -86,7 +85,7 @@ export const HoldMatchTickets = async (req, res) => {
     try {
         var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
             $inc: {
-                [`pending.${category}.count`]: quantity
+                [`pending.category${category}.count`]: quantity
             }
         }, { new: true });
         res.status(200).json(updatedMatch);
@@ -95,4 +94,47 @@ export const HoldMatchTickets = async (req, res) => {
         res.status(400).json({ message: e.message });
     }
 }
+
+export const UpdateMatchTickets = async (req, res) => {
+
+    var {MatchNumber,category,quantity,action } = req.body
+    if(action==='TICKET_RESERVED'){
+    try {
+        await Matches.findOneAndUpdate({ "matchNumber": MatchNumber }, {
+
+            $inc: {
+                [`availability.category${category}.count`]: quantity * -1
+            }
+        }, { new: true })
+        var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
+            $inc: {
+                [`pending.category${category}.count`]: quantity * -1
+            }
+        }, { new: true });
+        res.status(200).json(updatedMatch);
+    }
+    catch (e) {
+        res.status(400).json({ message: e.message });
+    }
+    }
+    else if(action==='TICKET_PENDING'){
+        try {
+            var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
+                $inc: {
+                    [`pending.category${category}.count`]: quantity
+                }
+            }, { new: true });
+            res.status(200).json(updatedMatch);
+        }
+        catch (e) {
+            res.status(400).json({ message: e.message });
+        }
+    }
+    else{
+        res.status(400).json("invalid action");
+    }
+}
+
+
+
 
