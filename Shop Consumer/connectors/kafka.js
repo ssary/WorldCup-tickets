@@ -56,6 +56,7 @@ const startKafkaConsumer = async () => {
       }
     },
   });
+  console.log("run")
 };
 
 module.exports = {
