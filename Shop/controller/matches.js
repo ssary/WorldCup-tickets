@@ -130,8 +130,17 @@ export const UpdateMatchTickets = async (req, res) => {
             res.status(400).json({ message: e.message });
         }
     }
-    else{
-        res.status(400).json("invalid action");
+    else if(action==='TICKET_CANCELLED'){try {
+        var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
+            $inc: {
+                [`pending.category${category}.count`]: quantity*-1
+            }
+        }, { new: true });
+        res.status(200).json(updatedMatch);
+    }
+    catch (e) {
+        res.status(400).json({ message: e.message });
+    }
     }
 }
 

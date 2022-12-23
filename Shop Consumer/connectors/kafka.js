@@ -47,6 +47,7 @@ const startKafkaConsumer = async () => {
         const processMessage = {
           [messages.TICKET_PENDING]: shopProcessor.processPendingTicket,
           [messages.TICKET_RESERVED]: shopProcessor.processReservedTicket,
+          [messages.TICKET_CANCELLED]: shopProcessor.processCancelledTicket,
         }[messageType];      
 
         // call the processor
