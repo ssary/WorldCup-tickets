@@ -17,14 +17,24 @@ const kafka = new Kafka({
   },
 });
 
+// Kafka Topics
 const topic = `${process.env.TOPIC_FIFA_TICKET_SALES}-${process.env.ENV}`;
-const consumer = kafka.consumer({ groupId: `${process.env.GROUP_ID}-${process.env.ENV}` });
+const masterlistTopic = `${process.env.TOPIC_FIFA_MASTER_LIST}-${process.env.ENV}`;
+
+// Kafka Consumers
+const consumer = kafka.consumer({ groupId: `${process.env.TOPIC_FIFA_TICKET_SALES}-${process.env.ENV}` });
+const masterlistConsumer = kafka.consumer({ groupId: `${process.env.TOPIC_FIFA_MASTER_LIST}-${process.env.ENV}` });
 
 const startKafkaConsumer = async () => {
+  // Connect consumers
   await consumer.connect();
-  console.log("connected")
+  await masterlistConsumer.connect();
+
+  // Subscribe consumers to topics
   await consumer.subscribe({ topic, fromBeginning: true });
-  console.log("Subscribed")
+  await masterlistConsumer.subscribe({ topic: masterlistTopic, fromBeginning: true });
+
+  // Ticket Sales Message Handler
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       try {
@@ -46,8 +56,8 @@ const startKafkaConsumer = async () => {
         const messageType = parsedMessage.meta.action;
         const processMessage = {
           [messages.TICKET_PENDING]: shopProcessor.processPendingTicket,
-          [messages.TICKET_RESERVED]: shopProcessor.processReservedTicket,
           [messages.TICKET_CANCELLED]: shopProcessor.processCancelledTicket,
+          [messages.TICKET_RESERVED]: shopProcessor.processReservedTicket,
         }[messageType];      
 
         // call the processor
@@ -57,7 +67,31 @@ const startKafkaConsumer = async () => {
       }
     },
   });
-  console.log("run")
+
+  await masterlistConsumer.run({
+    eachMessage: async ({ topic: masterlistTopic, partition, message }) => {
+      try {
+        // Deserialize message body
+        const parsedMessage = JSON.parse(message.value);
+        if (isEmpty(parsedMessage)) {
+          console.log('cannot process empty message')
+          return;
+        }
+
+        // process message if there is no validation error
+        const validationError = validate.kafkaMasterlistMessage(parsedMessage);
+        if (!isEmpty(validationError)) {
+          console.log('cannot process master list message with validation error:', validationError.message)
+          return;
+        }
+
+        // call the processor
+        await shopProcessor.processMasterlist(parsedMessage);
+      } catch (e) {
+        console.log('Unable to process message');
+      }
+    },
+  });
 };
 
 module.exports = {
