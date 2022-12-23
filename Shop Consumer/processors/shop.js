@@ -1,8 +1,6 @@
 const axios = require('axios');
 
 const processPendingTicket = async (message) => {
-   var {tickets,matchNumber} = message.body
-   var action = message.meta.action 
   console.log('[processPendingTicket]',message)
  //await axios.patch("http://localhost:4000/api/matches/",{"MatchNumber":matchNumber,"category":tickets.category,"quantity":tickets.quantity,"action":action})
  //commented out because people keep sending messages
@@ -28,5 +26,6 @@ const processCancelledTicket = async (message) => {
 
 module.exports = {
   processPendingTicket,
-  processReservedTicket
+  processReservedTicket,
+  processCancelledTicket
 };
