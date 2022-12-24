@@ -21,11 +21,9 @@ export const getMatch = async (req, res) => {
     }
 }
 export const addMatches = async (req, res) => {
-    const many = req.body.many;
-    if (many) {
-
+    
         try {
-            const List = req.body.matches;
+            const List = req.body;
             List.map(async function (item) {
                 console.log(item)
                 const newMatch = new Matches(item);
@@ -40,7 +38,6 @@ export const addMatches = async (req, res) => {
     }
 
 
-}
 export const updateMatch = async (req, res) => {
     const MatchNumber = req.params.MatchNumber
     try {
