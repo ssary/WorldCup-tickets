@@ -125,7 +125,7 @@ const buyTicket = async (req, res) => {
         
         var matchNumber = req.body.reservation.matchNumber
         var email = req.body.reservation.email
-        var [{ quantity, category, price }] = req.body.reservation.tickets
+        var { quantity, category, price } = req.body.reservation.tickets
         var { name, phone } = req.body
         var newTicket = new Reservation({ serialNumber: v4(), quantity: quantity, Category: category, price: price, MatchNumber: matchNumber, Buyer: { Email: email, Name: name, Phone: phone } })
         newTicket.save()
