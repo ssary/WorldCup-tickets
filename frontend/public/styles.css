@@ -1,0 +1,135 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+.main-header{
+    background: rgb(138,21,56);
+    background: linear-gradient(90deg, rgba(138,21,56,1) 0%, rgba(0,0,0,0.896796218487395) 100%);
+    padding-bottom: 50px;
+    margin-bottom: 20px;
+}
+.main-header img{
+    width: 40px;
+    height: 77px;
+    object-fit: cover;
+    object-position: 0 100%;
+    display: inline;
+}
+/* .main-title{
+    align-items: center;
+} */
+.brand{
+    color: rgb(255, 255, 255);
+}
+.main-header h1{
+    font-size: 3rem;
+    color: rgb(255, 255, 255);
+    display: inline;
+    margin-left: 5px;
+}
+h1{
+    font-size: 2rem;
+}
+body{
+    font-family: 'Bai Jamjuree', sans-serif;
+    /* font-family: 'Roboto', sans-serif; */
+    text-align: center;
+    font-size: 1rem;
+}
+.searchBar{
+    text-align: center;
+    background: rgb(255, 255, 255);
+    border: 1px solid;
+    border-radius: 50px;
+    width: 200px;
+    padding: 5px;
+    text-align: center;
+    margin-right: 25px;
+}
+.match-card{
+    border-radius: 7px;
+    padding: 10px;
+    margin: 40px 0;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.matches{
+    /* margin: 0 400px; */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.match-card *{
+    margin: 0 10px;
+}
+.match-card h1{
+    font-family: 'Dosis', sans-serif;
+    font-size: 1.2rem;
+    /* padding: 0 30px; */
+}
+.flag{
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border: 1px solid;
+}
+.my-btn{
+    font-size: 1rem;
+}
+hr{
+    border: 2px dimgrey dashed;
+}
+.btn{
+    /* background-color: #13161b !important; */
+}
+/* .matchDate{
+    display: inline;
+}
+.matchLocation{
+    display: inline;
+} */
+.matchLocation p{
+    font-size: 0.9rem;
+}
+.icons{
+    color: rgb(250, 68, 68);
+}
+.day p, .year p{
+    font-size: 0.8rem;
+    color: #686868;
+    
+}
+.month p{
+    font-weight:bold;
+    font-size: 1.1rem;
+}
+.matchInfo{
+    display: flex;
+}
+.match-card:hover{
+
+}
+.match-type{
+    padding: 20px;
+    display: flex;
+    
+}
+.round-btn{
+    margin: 0 10px;
+    border: #750202;
+}
+.slect h1{
+    margin-left: -780px;
+}
+.match-type-container{
+    margin-left: -270px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.match-type-container input{
+   height: 40px;
+}
+
