@@ -39,6 +39,7 @@ function getFlag(flag){
             return flags[i].url
         }
     }
+    return("TBA");
     
 }
 export default getFlag;

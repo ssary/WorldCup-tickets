@@ -147,3 +147,82 @@ hr{
 .my-drop{
     width: 900px;
 }
+.categoryCard{
+    background: #fff;
+    border-radius: 7px;
+    box-shadow: 0 2px 5px #ccc;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease-out;
+}
+.categoryCard:hover{
+    box-shadow: 0 10px 5px #ccc;
+}
+.categoryCard button{
+    width: 100px;
+}
+.side-div{
+    display: inline;
+    float: left;
+    /* border: 1px solid #686868; */
+    width: 500px;
+    height: 700px;
+    border-radius: 7px;
+
+    margin: 16px;
+}
+.side-div h1{
+    text-align: start;
+    padding: 20px;
+    transition: all 0.3s ease-out;
+}
+.chosen{
+    color:#750202;
+    transition: all 0.3s ease-out;
+}
+.reservation-form input, .reservation-form label{
+    display: block;
+}
+.reservation-form input{
+    margin: 10px 0 20px 150px;
+}
+.reservation-form label{
+    margin: 10px 0 10px 0;
+}
+.chosenCard{
+    transform: translateY(-5px) scale(1.005) translateZ(0);
+    transition: all 0.3s ease-out;
+}
+.match-header-card{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.match-header-card img{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    display: block;
+}
+.match-header-card p{
+    color: #fff;
+}
+.team-header{
+    margin: 0 100px;
+}
+.vs-header{
+    display: grid;
+}
+.vs-header p{
+    margin: 10px 0;
+    font-size: 1.3rem;
+}
+.stadium img{
+    width: 750px;
+    height: 750px;
+}
