@@ -67,9 +67,10 @@ const DeleteTicket = async (req, res) => {
 }
 const buyTicket = async (req, res) => {
     try {
+        var reservation = req.body.reservation
         // validate payload before proceeding with reservations
-        console.log(req.body.reservation)
-        const validationError = validateTicketReservationDto(req.body.reservation);
+        console.log(reservation)
+        const validationError = validateTicketReservationDto(reservation);
         if (validationError) {
             return res.status(403).send(validationError.message);
 
@@ -80,24 +81,24 @@ const buyTicket = async (req, res) => {
         await sendKafkaMessage(messagesType.TICKET_PENDING, {
             meta: { action: messagesType.TICKET_PENDING },
             body: {
-                matchNumber: req.body.reservation.matchNumber,
-                tickets: req.body.reservation.tickets,
+                matchNumber: reservation.matchNumber,
+                tickets: reservation.tickets,
             }
         });
         console.log("pending sent")
         // Perform Stripe Payment Flow
-        /*
+        
       try {
         const token = await stripe.tokens.create({
           card: {
-            number: req.body.card.number,
-            exp_month: req.body.card.expirationMonth,
-            exp_year: req.body.card.expirationYear,
-            cvc: req.body.card.cvc,
+            number: reservation.card.number,
+            exp_month: reservation.card.expirationMonth,
+            exp_year: reservation.card.expirationYear,
+            cvc: reservation.card.cvc,
           },
         });
         await stripe.charges.create({
-          amount: req.body.tickets.quantity * req.body.tickets.price,
+          amount: reservation.tickets.quantity * reservation.tickets.price,
           currency: 'usd',
           source: token.id,
           description: 'FIFA World Cup Ticket Reservation',
@@ -105,41 +106,32 @@ const buyTicket = async (req, res) => {
         await sendKafkaMessage(messagesType.TICKET_RESERVED, {
           meta: { action: messagesType.TICKET_RESERVED},
           body: { 
-            matchNumber: req.body.matchNumber,
-            tickets: req.body.tickets,
+            matchNumber: reservation.matchNumber,
+            tickets: reservation.tickets,
           }
         });
+
+        console.log("reservation sent")
       } catch (stripeError) {
         // Send cancellation message indicating ticket sale failed
         await sendKafkaMessage(messagesType.TICKET_CANCELLED, {
           meta: { action: messagesType.TICKET_CANCELLED},
           body: { 
-            matchNumber: req.body.matchNumber,
-            tickets: req.body.tickets,
+            matchNumber: reservation.matchNumber,
+            tickets: reservation.tickets,
           }
         });
+        console.log("paymeny failed, ticket cancelled")
         return res.status(400).send(`could not process payment: ${stripeError.message}`);
       }
-           */
-        // TODO: Update master list to reflect reserved ticket sale
         
-        var matchNumber = req.body.reservation.matchNumber
-        var email = req.body.reservation.email
-        var { quantity, category, price } = req.body.reservation.tickets
+        var matchNumber = reservation.matchNumber
+        var email = reservation.email
+        var { quantity, category, price } = reservation.tickets
         var { name, phone } = req.body
         var newTicket = new Reservation({ serialNumber: v4(), quantity: quantity, Category: category, price: price, MatchNumber: matchNumber, Buyer: { Email: email, Name: name, Phone: phone } })
         newTicket.save()
 
-
-        // Send message indicating ticket sale is final
-        await sendKafkaMessage(messagesType.TICKET_RESERVED, {
-            meta: { action: messagesType.TICKET_RESERVED },
-            body: {
-                matchNumber: matchNumber,
-                tickets: req.body.reservation.tickets,
-            }
-        });
-        console.log("reservation sent")
 
         // Return success response to client
         return res.json({
