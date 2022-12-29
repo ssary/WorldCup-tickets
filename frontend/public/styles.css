@@ -41,7 +41,7 @@ body{
     text-align: center;
     background: rgb(255, 255, 255);
     border: 1px solid;
-    border-radius: 50px;
+    border-radius: 7px;
     width: 200px;
     padding: 5px;
     text-align: center;
@@ -84,12 +84,13 @@ hr{
 .btn{
     /* background-color: #13161b !important; */
 }
-/* .matchDate{
+.matchDate{
     display: inline;
+    text-align: center;
 }
 .matchLocation{
     display: inline;
-} */
+}
 .matchLocation p{
     font-size: 0.9rem;
 }
@@ -106,7 +107,9 @@ hr{
     font-size: 1.1rem;
 }
 .matchInfo{
+    width: 50%;
     display: flex;
+    float: left;
 }
 .match-card:hover{
 
@@ -121,10 +124,13 @@ hr{
     border: #750202;
 }
 .slect h1{
-    margin-left: -780px;
+    margin-left: -820px;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 100px;
 }
 .match-type-container{
-    margin-left: -270px;
+    margin-left: -600px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -132,4 +138,12 @@ hr{
 .match-type-container input{
    height: 40px;
 }
-
+.team{
+    width: 150px;
+}
+.my-btn{
+    width: 115px;
+}
+.my-drop{
+    width: 900px;
+}
