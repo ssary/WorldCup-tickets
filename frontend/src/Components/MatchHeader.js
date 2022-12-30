@@ -18,9 +18,9 @@ function MatchHeader(props){
         </Navbar>
             <div>
                 <div className="match-header-card">
-                    <div className="team-header">{homeFlag != "TBA"? <img src={homeFlag}/> : <></>}<h1>{props.matchInfo.homeTeam}</h1></div>
+                    <div className="team-header home-team">{homeFlag != "TBA"? <img src={homeFlag}/> : <></>}<h1>{props.matchInfo.homeTeam}</h1></div>
                     <div className="vs-header"><h1>vs</h1><p>{props.matchInfo.location}</p></div> 
-                    <div className="team-header">{awayFlag != "TBA"? <img src={awayFlag}/> : <></>}<h1>{props.matchInfo.awayTeam}</h1></div>
+                    <div className="team-header away-team">{awayFlag != "TBA"? <img src={awayFlag}/> : <></>}<h1>{props.matchInfo.awayTeam}</h1></div>
                 </div>
             </div>
         </div>

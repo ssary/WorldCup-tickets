@@ -18,20 +18,22 @@ function Reservation(props){
     function handleChoose(category){
         if(chosen === category){
             setChosen(0);
+            setShowForm(false);
             return;
         }
         setChosen(category);
+        setShowForm(true);
     }
     console.log(chosen)
     return(
         <div>
             <MatchHeader matchInfo={matchInfo} />
             <div className="side-div">
-                <h1>Categories</h1>
-                <CategoryCard currentChosen={chosen} onChoose={handleChoose} category={1}/>
-                <CategoryCard currentChosen={chosen} onChoose={handleChoose} category={2}/>
-                <CategoryCard currentChosen={chosen} onChoose={handleChoose} category={3}/>
-                <ReservationForm />
+                <h1 className="title">Categories</h1>
+                <CategoryCard matchInfo={matchInfo} currentChosen={chosen} onChoose={handleChoose} category={1}/>
+                <CategoryCard matchInfo={matchInfo} currentChosen={chosen} onChoose={handleChoose} category={2}/>
+                <CategoryCard matchInfo={matchInfo} currentChosen={chosen} onChoose={handleChoose} category={3}/>
+                {showForm? <ReservationForm category={chosen} /> : <></>}
             </div>
             
             <div className="stadium">

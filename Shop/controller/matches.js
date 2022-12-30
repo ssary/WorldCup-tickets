@@ -12,8 +12,14 @@ export const getMatches = async (req, res) => {
 export const getRound = async (req, res) => {
     try {
         const {round} = req.body;
-        const records = await Matches.find({roundNumber: round}).sort({matchNumber: 1});
-        res.status(200).json(records);
+        if(round === 1){
+            const records = await Matches.find({$or: [{roundNumber: 1 }, {roundNumber: 2 }, {roundNumber: 3 }]}).sort({matchNumber: 1});
+            res.status(200).json(records);
+        }else{
+            const records = await Matches.find({roundNumber: round}).sort({matchNumber: 1});
+            res.status(200).json(records);
+        }
+        
     } catch (e) {
         res.status(404).json({ message: e.message });
     }

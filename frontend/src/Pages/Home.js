@@ -11,6 +11,7 @@ import Header from "../Components/Header"
 function Home() {
   const [matches, setMatches] = useState([]);
   const [round, setRound] = useState(0);
+  const [type, setType] = useState("");
     useEffect(()=>{
       if(round !== 0){
         axios.post("http://localhost:5001/api/matches/filterRound", {round: round}).then(res => {
@@ -52,6 +53,7 @@ function Home() {
   }, [])
   
   console.log(matches);
+  console.log(round);
   
   return (
     <div className="Home">
@@ -60,7 +62,12 @@ function Home() {
             <h1>Stages</h1>
             <div className="match-type-container">
                 <div className="match-type">
-                <Dropdown>
+                <button onClick={() => {setRound(1);setType("Group Stage")}} className={round === 1? "my-btn chosen-btn": "my-btn"}>Group Stage</button>
+                <button onClick={() => {setRound(4);setType("Knockout Stage")}} className={round === 4? "my-btn chosen-btn": "my-btn"}>Knock Out Stage</button>
+                <button onClick={() => {setRound(5);setType("Quarter Finals")}} className={round === 5? "my-btn chosen-btn": "my-btn"}>Quarter-Finals</button>
+                <button onClick={() => {setRound(6);setType("Semi Finals")}} className={round === 6? "my-btn chosen-btn": "my-btn"}>Semi-Finals</button>
+                <button onClick={() => {setRound(7);setType("Finals")}} className={round === 7? "my-btn chosen-btn": "my-btn"}>Finals</button>
+                {/* <Dropdown>
                 <Dropdown.Toggle variant="dark" id="dropdown-basic">
                     Select Round
                 </Dropdown.Toggle>
@@ -74,15 +81,17 @@ function Home() {
                     <Dropdown.Item onClick={() => setRound(6)}>Round 6</Dropdown.Item>
                     <Dropdown.Item onClick={() => setRound(7)}>Round 7</Dropdown.Item>
                 </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
                 </div>
                 <input className="searchBar" placeholder="Find match"></input>
                 
             </div>
             
+            
         </div>
       <div className="matches">
       <div className="match-containter">
+      {type !== ""? <h1 className="type-h1">{type}</h1> : <></>}
       {matches.map(match => (<MatchCard matchInfo={match} />))}
       {/* <Col><MatchCard /></Col>
       <Col><MatchCard /></Col>

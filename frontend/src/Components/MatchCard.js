@@ -39,7 +39,7 @@ function MatchCard(props){
             <div className="team">{homeFlag != "TBA"? <img className="flag" src={homeFlag}/> : <span class="material-symbols-outlined">question_mark</span>}<h1>{props.matchInfo.homeTeam}</h1></div>
             <div className="vs"><p>vs</p></div>
             <div className="team">{awayFlag != "TBA"? <img className="flag" src={awayFlag}/> : <span class="material-symbols-outlined">question_mark</span>}<h1>{props.matchInfo.awayTeam}</h1></div>
-            <Link to="/reservation" state={{"matchInfo": props.matchInfo}}><button onClick={buyTicket} className="btn btn-dark my-btn">Buy Ticket</button></Link>
+            <Link to="/reservation" state={{"matchInfo": props.matchInfo}}><button onClick={buyTicket} className="btn btn-dark buy-btn">Buy Ticket</button></Link>
         </div>
     )
 }
