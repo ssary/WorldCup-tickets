@@ -3,7 +3,16 @@ import Matches from "../Models/Matches.js";
 
 export const getMatches = async (req, res) => {
     try {
-        const records = await Matches.find();
+        const records = await Matches.find().sort({matchNumber: 1});
+        res.status(200).json(records);
+    } catch (e) {
+        res.status(404).json({ message: e.message });
+    }
+}
+export const getRound = async (req, res) => {
+    try {
+        const {round} = req.body;
+        const records = await Matches.find({roundNumber: round}).sort({matchNumber: 1});
         res.status(200).json(records);
     } catch (e) {
         res.status(404).json({ message: e.message });
@@ -82,60 +91,19 @@ export const HoldMatchTickets = async (req, res) => {
     try {
         var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
             $inc: {
-                [`pending.category${category}.count`]: quantity
+                Tickets: increment
             }
-        }, { new: true });
-        res.status(200).json(updatedMatch);
-    }
-    catch (e) {
-        res.status(400).json({ message: e.message });
-    }
-}
-
-export const UpdateMatchTickets = async (req, res) => {
-
-    var {MatchNumber,category,quantity,action } = req.body
-    if(action==='TICKET_RESERVED'){
-    try {
-        var updatedMatch = await Matches.findOneAndUpdate({ "matchNumber": MatchNumber }, {
-
-            $inc: {
-                [`availability.category${category}.available`]: quantity * -1,
-                [`availability.category${category}.pending`]: quantity * -1
-            }
-        }, { new: true });
-        res.status(200).json(updatedMatch);
-    }
-    catch (e) {
-        res.status(400).json({ message: e.message });
-    }
-    }
-    else if(action==='TICKET_PENDING'){
-        try {
-            var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
-                $inc: {
-                    [`availability.category${category}.pending`]: quantity
-                }
-            }, { new: true });
-            res.status(200).json(updatedMatch);
+        },{new:true});
+        if(updatedMatch.Tickets > updatedMatch.StadiumCapacity){
+            await Matches.findOneAndUpdate({ MatchNumber: updatedMatch.MatchNumber},{Tickets:updatedMatch.StadiumCapacity})
+            throw new Error("Maximum number of tickets reached");
         }
-        catch (e) {
-            res.status(400).json({ message: e.message });
-        }
-    }
-    else if(action==='TICKET_CANCELLED'){try {
-        var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
-            $inc: {
-                [`availability.category${category}.pending`]: quantity*-1
-            }
-        }, { new: true });
         res.status(200).json(updatedMatch);
     }
     catch (e) {
         res.status(400).json({ message: e.message });
     }
     }
-}
 
 
 
