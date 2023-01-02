@@ -1,9 +1,12 @@
 import express from 'express'
-import{getMatches,getMatch,addMatches,updateMatch, ReserveMatchTickets,HoldMatchTickets, UpdateMatchTickets} from "../controller/matches.js"
+
+import{getMatches,getMatch,addMatches,updateMatch, ReserveMatchTickets,HoldMatchTickets, UpdateMatchTickets, getRound} from "../controller/matches.js"
+
 
 const router = express.Router();
 
 router.get('/',getMatches)
+router.post('/filterRound',getRound)
 router.get('/:MatchNumber',getMatch)
 router.post('/',addMatches)
 router.put('/update/:MatchNumber',updateMatch)

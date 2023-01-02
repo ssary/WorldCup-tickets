@@ -30,7 +30,8 @@ const ticketSchema = new Schema({
             index: true,
             unique: true,
             sparse: true,
-            //match: [/^01[0125][0-9]{8}$/gm, 'fill a valid phone number']
+            match: [/^01[0125][0-9]{8}$/gm, 'fill a valid phone number'
+            ]
         }},
     MatchNumber:{
         type:Number

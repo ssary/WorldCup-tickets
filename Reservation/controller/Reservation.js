@@ -87,6 +87,7 @@ const buyTicket = async (req, res) => {
         });
         console.log("pending sent")
         // Perform Stripe Payment Flow
+
         
       try {
         const token = await stripe.tokens.create({
@@ -110,13 +111,13 @@ const buyTicket = async (req, res) => {
             tickets: reservation.tickets,
           }
         });
-
         console.log("reservation sent")
       } catch (stripeError) {
         // Send cancellation message indicating ticket sale failed
         await sendKafkaMessage(messagesType.TICKET_CANCELLED, {
           meta: { action: messagesType.TICKET_CANCELLED},
           body: { 
+
             matchNumber: reservation.matchNumber,
             tickets: reservation.tickets,
           }
@@ -124,13 +125,13 @@ const buyTicket = async (req, res) => {
         console.log("payment failed, ticket cancelled")
         return res.status(400).send(`could not process payment: ${stripeError.message}`);
       }
-        
         var matchNumber = reservation.matchNumber
         var email = reservation.email
         var { quantity, category, price } = reservation.tickets
         var { name, phone } = req.body
         var newTicket = new Reservation({ serialNumber: v4(), quantity: quantity, Category: category, price: price, MatchNumber: matchNumber, Buyer: { Email: email, Name: name, Phone: phone } })
         newTicket.save()
+
 
 
         // Return success response to client

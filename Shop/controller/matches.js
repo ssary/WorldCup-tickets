@@ -3,8 +3,23 @@ import Matches from "../Models/Matches.js";
 
 export const getMatches = async (req, res) => {
     try {
-        const records = await Matches.find();
+        const records = await Matches.find().sort({matchNumber: 1});
         res.status(200).json(records);
+    } catch (e) {
+        res.status(404).json({ message: e.message });
+    }
+}
+export const getRound = async (req, res) => {
+    try {
+        const {round} = req.body;
+        if(round === 1){
+            const records = await Matches.find({$or: [{roundNumber: 1 }, {roundNumber: 2 }, {roundNumber: 3 }]}).sort({matchNumber: 1});
+            res.status(200).json(records);
+        }else{
+            const records = await Matches.find({roundNumber: round}).sort({matchNumber: 1});
+            res.status(200).json(records);
+        }
+        
     } catch (e) {
         res.status(404).json({ message: e.message });
     }
@@ -92,6 +107,7 @@ export const HoldMatchTickets = async (req, res) => {
     }
 }
 
+
 export const UpdateMatchTickets = async (req, res) => {
 
     var {MatchNumber,category,quantity,action } = req.body
@@ -114,6 +130,7 @@ export const UpdateMatchTickets = async (req, res) => {
         try {
             var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
                 $inc: {
+
                     [`availability.category${category}.pending`]: quantity
                 }
             }, { new: true });
@@ -126,6 +143,7 @@ export const UpdateMatchTickets = async (req, res) => {
     else if(action==='TICKET_CANCELLED'){try {
         var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
             $inc: {
+
                 [`availability.category${category}.pending`]: quantity*-1
             }
         }, { new: true });

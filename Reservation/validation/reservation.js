@@ -11,6 +11,7 @@ const reservationValidation = {
       email: Joi.string().required(),
       matchNumber: Joi.number().strict().required(),
       tickets,
+
       card: Joi.object().keys({
         number: Joi.string().required(),
         expirationMonth: Joi.number().strict().required(),
@@ -21,6 +22,6 @@ const reservationValidation = {
     return schema.validate(reservation).error;
   },
 
-};
 
+};
 module.exports = reservationValidation;
