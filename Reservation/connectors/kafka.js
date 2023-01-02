@@ -7,7 +7,7 @@ const kafka = new Kafka({
   clientId: `${process.env.CLIENT_ID}-${process.env.ENV}`,
   brokers: [process.env.KAFKA_BROKERS],
   ssl: true,
-  logLevel: 2,  
+  logLevel: 2,
   sasl: {
     mechanism: 'plain',
     username: process.env.KAFKA_SASL_USERNAME,
@@ -19,7 +19,11 @@ const topic = `${process.env.TOPIC_FIFA_TICKET_SALES}-${process.env.ENV}`;
 const producer = kafka.producer();
 
 const startKafkaProducer = async () => {
-  await producer.connect()
+  try {
+    await producer.connect()
+  } catch (e) {
+    console.log('Unable to connect producer with Kafka:', e.message);
+  }
 };
 
 const sendKafkaMessage = async (messageType, message) => {
@@ -30,10 +34,23 @@ const sendKafkaMessage = async (messageType, message) => {
   }
 
   // send message to kafka broker
-  await producer.send({ topic, messages: [{ value: JSON.stringify(message) }] });
+  let attempts = 0;
+  do {
+    try {
+      await producer.send({ topic, messages: [{ value: JSON.stringify(message) }] });
+    } catch (e) {
+      console.log('e.message', e.message)
+      if (e.message === 'The producer is disconnected') {
+        await startKafkaProducer();
+      }
+      attempts++;
+      continue; // try and send message again
+    }
+    break; // message was sent so exit the loop
+  } while (attempts > 3);
 
-  // successfully exit
-  return Promise.resolve();
+  // exit
+  return attempts > 3 ? Promise.reject('could not send message') : Promise.resolve();
 };
 
 module.exports = {
