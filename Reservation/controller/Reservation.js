@@ -98,7 +98,7 @@ const buyTicket = async (req, res) => {
           },
         });
         await stripe.charges.create({
-          amount: reservation.tickets.quantity * reservation.tickets.price,
+          amount: reservation.tickets.quantity * reservation.tickets.price*100,
           currency: 'usd',
           source: token.id,
           description: 'FIFA World Cup Ticket Reservation',
@@ -121,7 +121,7 @@ const buyTicket = async (req, res) => {
             tickets: reservation.tickets,
           }
         });
-        console.log("paymeny failed, ticket cancelled")
+        console.log("payment failed, ticket cancelled")
         return res.status(400).send(`could not process payment: ${stripeError.message}`);
       }
         
