@@ -1,8 +1,6 @@
-import { range } from 'balanced-match'
+const messageModel = require('../model/message.js');
 
-const messageModel = require('../model/message.js')
-
-export const postMessage = async (req, res) =>{
+exports.postMessage = async (req, res) =>{
     const {matchNumber, category, price, state, quantity} = req.body
     try {
         const newMessage = new messageModel({'category':category, 'state': state, 'price': price,
@@ -15,15 +13,15 @@ export const postMessage = async (req, res) =>{
     }
 }
 
-export const countEachCategory = async (req,res)=>{
+exports.countEachCategory = async (req,res)=>{
     try {
         const messages = await messageModel.find({state: 'TICKET_RESERVED'})
         let category1 = 0, category2=0, category3=0
         messages.map((message)=>{
-            if(message.state === 1){
+            if(message.category === 1){
                 category1 += message.quantity
             }
-            else if(message.state === 2){
+            else if(message.category === 2){
                 category2 += message.quantity
             }
             else{
@@ -36,7 +34,7 @@ export const countEachCategory = async (req,res)=>{
     }
 }
 
-export const countMatchesTickets = async (req,res)=>{
+exports.countMatchesTickets = async (req,res)=>{
     try {
         let matchFreq = new Array(65).fill(0)
         //let roundFreq = newArray(8).fill(0)
@@ -47,19 +45,19 @@ export const countMatchesTickets = async (req,res)=>{
             //const round = match.round
             matchFreq[matchNumber] += match.quantity
         })
-        let matchReservedTickets = {}
+        let matchReservedTickets = []
         for(let i=0;i<65;i++){
-            matchReservedTickets[i] = matchFreq[i]
+            matchReservedTickets.push([i, matchFreq[i]])
         }
-        matchReservedTickets.sort((a,b)=>b-a)
-        res.status(200).send(matchReservedTickets.slice(0,10))
+        matchReservedTickets.sort((a,b)=>{return b[1] - a[1]});
+        res.status(200).send(matchReservedTickets)
     } catch (error) {
         res.send(error)
     }
 }
 
 
-export const statePercentage = async (req, res)=>{
+exports.statePercentage = async (req, res)=>{
     try {
         const messages = await messageModel.find()
         let countReserved=0, countCancelled=0, countPending=0

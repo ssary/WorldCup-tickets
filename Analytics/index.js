@@ -3,9 +3,11 @@ const bodyParser =  require ('body-parser');
 const mongoose = require("mongoose"); 
 require('dotenv').config();
 const app = express();
+const router = require('./routes/analytics.js')
 
 app.use(bodyParser.json({extended: true}));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use('/Analytics', router)
 
 const PORT = process.env.PORT || 5001;
 
