@@ -45,6 +45,7 @@ function Home() {
   return (
     <div className="Home">
       <Header />
+      
       <div className="slect">
             <h1>Stages</h1>
             <div className="match-type-container">
