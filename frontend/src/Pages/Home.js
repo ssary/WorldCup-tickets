@@ -10,11 +10,14 @@ import Header from "../Components/Header"
 
 function Home() {
   const [matches, setMatches] = useState([]);
+  const [initialMatches, setInitialMatches] = useState([]);
   const [round, setRound] = useState(0);
+  const [type, setType] = useState("");
     useEffect(()=>{
       if(round !== 0){
         axios.post("http://localhost:5001/api/matches/filterRound", {round: round}).then(res => {
           setMatches(res.data);
+          setInitialMatches(res.data);
         })
       }
 
@@ -37,20 +40,56 @@ function Home() {
           roundNumber: match.roundNumber
         }
       }))
+      setInitialMatches(res.data.map(match => {
+        return {
+          availability: {category1: match.availability.category1, category2: match.availability.category2, category3: match.availability.category3},
+          awayTeam: match.awayTeam,
+          awayTeamScore: match.awayTeamScore,
+          dateUtc: match.dateUtc,
+          homeTeam: match.homeTeam,
+          homeTeamScore: match.homeTeamScore,
+          location: match.location,
+          matchNumber: match.matchNumber,
+          pending: {category1: match.pending.category1, category2: match.pending.category2, category3: match.pending.category3} = match.pending,
+          roundNumber: match.roundNumber
+        }
+      }))
     })
+    
   }, [])
   
+  
+  function handleFilter(e){
+    const search = e.target.value;
+    if(search !== ''){
+      var filteredMatches = initialMatches.filter(m => m.awayTeam.toLowerCase().includes(search.toLowerCase()) || m.homeTeam.toLowerCase().includes(search.toLowerCase()))
+      setMatches(filteredMatches)
+    }else{
+      setMatches(initialMatches)
+    }
+  }
+
   console.log(matches);
+  console.log(round);
   
   return (
     <div className="Home">
       <Header />
       
+      <div className="matches">
       <div className="slect">
             <h1>Stages</h1>
             <div className="match-type-container">
                 <div className="match-type">
-                <Dropdown>
+                <Row xs={1} md={6} className="g-4 row">
+                <Col><button onClick={() => {setRound(1);setType("Group Stage")}} className={round === 1? "my-btn chosen-btn": "my-btn"}>Group Stage</button></Col>
+                <Col><button onClick={() => {setRound(4);setType("Knockout Stage")}} className={round === 4? "my-btn chosen-btn": "my-btn"}>Knock Out Stage</button></Col>
+                <Col><button onClick={() => {setRound(5);setType("Quarter Finals")}} className={round === 5? "my-btn chosen-btn": "my-btn"}>Quarter-Finals</button></Col>
+                <Col><button onClick={() => {setRound(6);setType("Semi Finals")}} className={round === 6? "my-btn chosen-btn": "my-btn"}>Semi-Finals</button></Col>
+                <Col><button onClick={() => {setRound(7);setType("Finals")}} className={round === 7? "my-btn chosen-btn": "my-btn"}>Finals</button></Col>
+                <Col><input onChange={handleFilter} className="searchBar" placeholder="Find match"></input></Col>
+                </Row>
+                {/* <Dropdown>
                 <Dropdown.Toggle variant="dark" id="dropdown-basic">
                     Select Round
                 </Dropdown.Toggle>
@@ -64,15 +103,16 @@ function Home() {
                     <Dropdown.Item onClick={() => setRound(6)}>Round 6</Dropdown.Item>
                     <Dropdown.Item onClick={() => setRound(7)}>Round 7</Dropdown.Item>
                 </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
                 </div>
-                <input className="searchBar" placeholder="Find match"></input>
+                
                 
             </div>
             
+            
         </div>
-      <div className="matches">
       <div className="match-containter">
+      {type !== ""? <h1 className="type-h1">{type}</h1> : <></>}
       {matches.map(match => (<MatchCard matchInfo={match} />))}
       {/* <Col><MatchCard /></Col>
       <Col><MatchCard /></Col>
