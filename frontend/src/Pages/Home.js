@@ -58,15 +58,20 @@ function Home() {
   return (
     <div className="Home">
       <Header />
+      
+      <div className="matches">
       <div className="slect">
             <h1>Stages</h1>
             <div className="match-type-container">
                 <div className="match-type">
-                <button onClick={() => {setRound(1);setType("Group Stage")}} className={round === 1? "my-btn chosen-btn": "my-btn"}>Group Stage</button>
-                <button onClick={() => {setRound(4);setType("Knockout Stage")}} className={round === 4? "my-btn chosen-btn": "my-btn"}>Knock Out Stage</button>
-                <button onClick={() => {setRound(5);setType("Quarter Finals")}} className={round === 5? "my-btn chosen-btn": "my-btn"}>Quarter-Finals</button>
-                <button onClick={() => {setRound(6);setType("Semi Finals")}} className={round === 6? "my-btn chosen-btn": "my-btn"}>Semi-Finals</button>
-                <button onClick={() => {setRound(7);setType("Finals")}} className={round === 7? "my-btn chosen-btn": "my-btn"}>Finals</button>
+                <Row xs={1} md={6} className="g-4 row">
+                <Col><button onClick={() => {setRound(1);setType("Group Stage")}} className={round === 1? "my-btn chosen-btn": "my-btn"}>Group Stage</button></Col>
+                <Col><button onClick={() => {setRound(4);setType("Knockout Stage")}} className={round === 4? "my-btn chosen-btn": "my-btn"}>Knock Out Stage</button></Col>
+                <Col><button onClick={() => {setRound(5);setType("Quarter Finals")}} className={round === 5? "my-btn chosen-btn": "my-btn"}>Quarter-Finals</button></Col>
+                <Col><button onClick={() => {setRound(6);setType("Semi Finals")}} className={round === 6? "my-btn chosen-btn": "my-btn"}>Semi-Finals</button></Col>
+                <Col><button onClick={() => {setRound(7);setType("Finals")}} className={round === 7? "my-btn chosen-btn": "my-btn"}>Finals</button></Col>
+                <Col><input className="searchBar" placeholder="Find match"></input></Col>
+                </Row>
                 {/* <Dropdown>
                 <Dropdown.Toggle variant="dark" id="dropdown-basic">
                     Select Round
@@ -83,13 +88,12 @@ function Home() {
                 </Dropdown.Menu>
             </Dropdown> */}
                 </div>
-                <input className="searchBar" placeholder="Find match"></input>
+                
                 
             </div>
             
             
         </div>
-      <div className="matches">
       <div className="match-containter">
       {type !== ""? <h1 className="type-h1">{type}</h1> : <></>}
       {matches.map(match => (<MatchCard matchInfo={match} />))}

@@ -17,7 +17,7 @@ function MatchCard(props){
     }
     return(
         <div className="match-card">
-            <h1>Match {props.matchInfo.matchNumber}</h1>
+            <h1 className="matchNumber">Match {props.matchInfo.matchNumber}</h1>
             <div className="matchInfo">
                 <div className="matchDate">
                     <div className="day">

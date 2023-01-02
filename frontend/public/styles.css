@@ -42,7 +42,7 @@ body{
     background: rgb(255, 255, 255);
     border: 1px solid;
     border-radius: 7px;
-    width: 200px;
+    width: 160px;
     padding: 5px;
     text-align: center;
     margin-right: 25px;
@@ -147,7 +147,7 @@ hr{
     border: #750202;
 }
 .slect h1{
-    margin-left: -820px;
+    text-align: left;
     font-weight: 900;
     font-size: 3rem;
     line-height: 100px;
@@ -160,7 +160,8 @@ hr{
     height: 100px;
 }
 .match-type-container button{
-    margin: 0 15px;
+    padding: 10px;
+    width: 145px;
 }
 .match-type-container input{
    height: 40px;
@@ -312,3 +313,39 @@ hr{
     font-size: 3rem;
     font-weight:900;
 }
+@media only screen and (max-width: 800px) {
+    .match-card{
+        border-radius: 7px;
+        padding: 10px;
+        margin: 40px 0;
+        display:grid;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .match-card *{
+        margin: 5px 0;
+    }
+    .match-type-container{
+        /* margin-left: -600px; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100px;
+        margin-top: 150px;
+    }
+  }
+@media only screen and (max-width: 800px) {
+    .matches{
+        /* margin: 0 400px; */
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 50px;
+    }
+    .match-containter{
+        margin-top: 150px;
+    }
+    .matchInfo{
+        display: none;
+    }
+  }
