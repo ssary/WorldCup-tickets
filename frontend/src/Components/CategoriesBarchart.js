@@ -4,7 +4,6 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 function CategoriesBarchart(props){
     const countCategories = props.data
     const options = {
-        width:600,
         animationDuration: 3000,
         animationEnabled: true,
         theme: "light2",

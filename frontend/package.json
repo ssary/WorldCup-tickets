@@ -9,9 +9,11 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.2",
     "canvasjs-react-charts": "^1.0.5",
+    "font-awesome": "^4.7.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.7.1",
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
@@ -43,6 +45,8 @@
   "devDependencies": {
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.7",
-    "@babel/plugin-proposal-export-default-from": "^7.18.10"
+    "@babel/plugin-proposal-export-default-from": "^7.18.10",
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3"
   }
 }
