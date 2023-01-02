@@ -16,17 +16,6 @@ function Home() {
         axios.post("http://localhost:5001/api/matches/filterRound", {round: round}).then(res => {
           setMatches(res.data);
         })
-        // const f =async() =>{
-        //   const response = await fetch('http://localhost:5001/api/matches/filterRound',{
-        //     method: 'POST',
-        //     body: JSON.stringify(round)
-        //   })
-        //   const json = await response.json()
-        //   if(response.ok){
-        //     setMatches(json)
-        //   }
-        // }
-        // f()
       }
 
     },[round])
@@ -44,7 +33,7 @@ function Home() {
           homeTeamScore: match.homeTeamScore,
           location: match.location,
           matchNumber: match.matchNumber,
-          pending: {category1: match.pending.category1, category2: match.pending.category2, category3: match.pending.category3} = match.pending,
+          //pending: {category1: match.pending.category1, category2: match.pending.category2, category3: match.pending.category3} = match.pending,
           roundNumber: match.roundNumber
         }
       }))

@@ -52,8 +52,20 @@ const matchSchema = new Schema({
       available: { type: Number },
       pending: { type: Number, default: 0 },
       price: { type: Number, default: 195 }
+    },
+    pending: {
+      category1: {
+        count: { type: Number,default:0 },
+        price: { type: Number, default: 75 }
+      },
+      category2: {
+        count: { type: Number,default:0 },
+        price: { type: Number, default: 125 }
+      }, category3: {
+        count: { type: Number,default:0},
+        price: { type: Number, default: 195 }
+      }
     }
-
   }
 }
 
