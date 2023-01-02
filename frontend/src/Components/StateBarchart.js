@@ -1,14 +1,16 @@
 import React from 'react'
-import { CanvasJSChart } from 'canvasjs-react-charts';
-import axios from 'axios';
+import CanvasJSReact from '../canvasjs.react'
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const StateBarChart = () => {
-    const statePercentage = axios.get('https://cors-anywhere.herokuapp.com/http://localhost:4002/Analytics/percentage')
+function StateBarChart(props){    
+    const statePercentage = props.data
+
     const options = {
+        animationDuration: 3000,
         animationEnabled: true,
         theme: "light2",
         title:{
-            text: "Percentage of each state"
+            text: "Number of tickets of each state"
         },
         axisX: {
             title: "State",
@@ -24,14 +26,9 @@ const StateBarChart = () => {
                 { y:  statePercentage['countReserved'], label: "Reserved" },
                 { y:  statePercentage['countPending'], label: "Pending" },
                 { y:  statePercentage['countCancelled'], label: "Cancelled" }
-                // { y:  100, label: "Reserved" },
-                // { y:  54321, label: "Pending" },
-                // { y:  84325, label: "Cancelled" }
             ]
         }]
-    }
-
-    
+    }   
     return (
     <>
       <CanvasJSChart options={options}/>
