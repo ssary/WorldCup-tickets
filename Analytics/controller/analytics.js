@@ -28,6 +28,7 @@ exports.countEachCategory = async (req,res)=>{
                 category3 += message.quantity
             }
         })
+        res.header('Access-Control-Allow-Origin', '*');
         res.status(200).send({'category1': category1, 'category2': category2, 'category3': category3})
     } catch (error) {
         res.send(error)
@@ -46,10 +47,11 @@ exports.countMatchesTickets = async (req,res)=>{
             matchFreq[matchNumber] += match.quantity
         })
         let matchReservedTickets = []
-        for(let i=0;i<65;i++){
+        for(let i=1;i<65;i++){
             matchReservedTickets.push([i, matchFreq[i]])
         }
         matchReservedTickets.sort((a,b)=>{return b[1] - a[1]});
+        res.header('Access-Control-Allow-Origin', '*');
         res.status(200).send(matchReservedTickets)
     } catch (error) {
         res.send(error)
@@ -72,6 +74,7 @@ exports.statePercentage = async (req, res)=>{
                 countCancelled += message.quantity
             }
         })
+        res.header('Access-Control-Allow-Origin', '*');
         res.status(200).send({'countReserved': countReserved, 'countPending': countPending, 'countCancelled': countCancelled}) 
     } catch (error) {
         res.send(error.message)
