@@ -36,7 +36,6 @@ function Home() {
           homeTeamScore: match.homeTeamScore,
           location: match.location,
           matchNumber: match.matchNumber,
-          //pending: {category1: match.pending.category1, category2: match.pending.category2, category3: match.pending.category3} = match.pending,
           roundNumber: match.roundNumber
         }
       }))
@@ -50,7 +49,6 @@ function Home() {
           homeTeamScore: match.homeTeamScore,
           location: match.location,
           matchNumber: match.matchNumber,
-          pending: {category1: match.pending.category1, category2: match.pending.category2, category3: match.pending.category3} = match.pending,
           roundNumber: match.roundNumber
         }
       }))
@@ -63,6 +61,7 @@ function Home() {
     const search = e.target.value;
     if(search !== ''){
       var filteredMatches = initialMatches.filter(m => m.awayTeam.toLowerCase().includes(search.toLowerCase()) || m.homeTeam.toLowerCase().includes(search.toLowerCase()))
+      console.log(filteredMatches);
       setMatches(filteredMatches)
     }else{
       setMatches(initialMatches)
@@ -89,21 +88,6 @@ function Home() {
                 <Col><button onClick={() => {setRound(7);setType("Finals")}} className={round === 7? "my-btn chosen-btn": "my-btn"}>Finals</button></Col>
                 <Col><input onChange={handleFilter} className="searchBar" placeholder="Find match"></input></Col>
                 </Row>
-                {/* <Dropdown>
-                <Dropdown.Toggle variant="dark" id="dropdown-basic">
-                    Select Round
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => setRound(1)}>Round 1</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setRound(2)}>Round 2</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setRound(3)}>Round 3</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setRound(4)}>Round 4</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setRound(5)}>Round 5</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setRound(6)}>Round 6</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setRound(7)}>Round 7</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown> */}
                 </div>
                 
                 
