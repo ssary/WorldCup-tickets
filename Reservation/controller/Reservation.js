@@ -147,5 +147,5 @@ const buyTicket = async (req, res) => {
     }
 }
 
-  
+
 module.exports = { UpdateTicket, getReservations, getAllReservations, buyTicket, getReservationWithDegree };

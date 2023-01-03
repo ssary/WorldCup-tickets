@@ -30,7 +30,6 @@ function MatchCard(props){
                         <p>{date.getFullYear()}</p>
                     </div>
                 </div>
-                {/* <hr /> */}
                 <div className="matchLocation">
                     <p>{time}</p>
                     <p><span class="material-symbols-outlined icons">location_on</span>{props.matchInfo.location}</p>
