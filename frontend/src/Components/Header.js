@@ -1,13 +1,21 @@
 import React from "react";
-import { Navbar } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
 import { Button, Container, Modal} from "react-bootstrap";
+import { useLocation } from "react-router";
 
 function Header(){
+    const loc = useLocation()
+    console.log(loc.pathname.includes('Analytics'));
+    let analyticsBtn = {}
+    if(loc.pathname.includes('Analytics')){
+        analyticsBtn= {display: 'none'}
+    }
     return(
         <div className="main-header">
 
         <Navbar className="nav2 my-nav" expand="sm">
             <Navbar.Brand className="brand" href="/">BSMSM_inc</Navbar.Brand>
+            <Navbar.Brand style={analyticsBtn} className="analytics-nav" href="/Analytics">Analytics</Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
                 
