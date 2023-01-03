@@ -7,24 +7,24 @@ import StatePieChart from "../Components/StatePieChart";
 import CategoriesBarchart from "../Components/CategoriesBarchart";
 import {FaChartPie} from 'react-icons/fa'
 import MatchesBarChart from "../Components/MatchesBarChart";
-
+const ANALYTICS_URL = 'https://world-cup-analytics-microservice.vercel.app/Analytics'
  function Analytics(){
     const [statePercentage, setStatePercentage] = useState(null);
     const [countCategories, setCounteCategories] = useState(null);
     const [countMatches, setCountMatches] = useState(null);
     
         useEffect(()=>{
-        axios.get('http://localhost:4002/Analytics/percentage').then(
+        axios.get(`${ANALYTICS_URL}/percentage`).then(
             (response)=>{
                 setStatePercentage(response.data)
             }
         );
-        axios.get('http://localhost:4002/Analytics/countCategories').then(
+        axios.get(`${ANALYTICS_URL}/countCategories`).then(
             (response)=>{
                 setCounteCategories(response.data)
             }
         );
-        axios.get('http://localhost:4002/Analytics/countMatches').then(
+        axios.get(`${ANALYTICS_URL}/countMatches`).then(
             (response)=>{
                 setCountMatches(response.data)
             }

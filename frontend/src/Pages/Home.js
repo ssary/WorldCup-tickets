@@ -13,9 +13,10 @@ function Home() {
   const [initialMatches, setInitialMatches] = useState([]);
   const [round, setRound] = useState(0);
   const [type, setType] = useState("");
+  const ShopURL = "https://world-cup-shop-microservice.vercel.app/api/matches"
     useEffect(()=>{
       if(round !== 0){
-        axios.post("http://localhost:5001/api/matches/filterRound", {round: round}).then(res => {
+        axios.post(`${ShopURL}/filterRound`, {round: round}).then(res => {
           setMatches(res.data);
           setInitialMatches(res.data);
         })
@@ -24,7 +25,7 @@ function Home() {
     },[round])
 
   useEffect(()=>{
-    axios.get("http://localhost:5001/api/matches").then(res => {
+    axios.get(ShopURL).then(res => {
       console.log(res.data);
       setMatches(res.data.map(match => {
         return {
