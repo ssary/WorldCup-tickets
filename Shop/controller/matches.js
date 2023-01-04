@@ -88,23 +88,6 @@ export const UpdateMatchTickets = async (req, res) => {
         catch (e) {
             res.status(400).json({ message: e.message });
         }
-export const UpdateMatchTickets = async (req, res) => {
-
-    var { matchNumber, category, quantity, action } = req.body
-    if (action === 'TICKET_RESERVED') {
-        try {
-            var updatedMatch = await Matches.findOneAndUpdate({ matchNumber: matchNumber }, {
-
-                $inc: {
-                    [`availability.category${category}.available`]: quantity * -1,
-                    [`availability.category${category}.pending`]: quantity * -1
-                }
-            }, { new: true });
-            res.status(200).json(updatedMatch);
-        }
-        catch (e) {
-            res.status(400).json({ message: e.message });
-        }
     }
     else if (action === 'TICKET_PENDING') {
         try {
