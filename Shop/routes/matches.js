@@ -4,8 +4,8 @@ import{getMatches,getMatch,addMatches,updateMatch, UpdateMatchTickets} from "../
 const router = express.Router();
 
 router.get('/',getMatches)
-router.get('/:MatchNumber',getMatch)
+router.get('/:matchNumber',getMatch)
 router.post('/',addMatches)
-router.put('/update/:MatchNumber',updateMatch)
+router.put('/update/:matchNumber',updateMatch)
 router.patch('/',UpdateMatchTickets)
 export default router;

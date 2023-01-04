@@ -12,8 +12,8 @@ export const getMatches = async (req, res) => {
 export const getMatch = async (req, res) => {
 
     try {
-        const MatchNumber = req.params.MatchNumber
-        const Match = await Matches.findOne({ matchNumber: MatchNumber })
+        const matchNumber = req.params.matchNumber
+        const Match = await Matches.findOne({ matchNumber: matchNumber })
         res.status(200).json(Match)
     }
     catch (e) {
@@ -43,9 +43,9 @@ export const addMatches = async (req, res) => {
 
 
 export const updateMatch = async (req, res) => {
-    const MatchNumber = req.params.MatchNumber
+    const matchNumber = req.params.matchNumber
     try {
-        const updatedMatch = await Matches.findOneAndUpdate({ matchNumber: MatchNumber }, {
+        const updatedMatch = await Matches.findOneAndUpdate({ matchNumber: matchNumber }, {
             $set: req.body,
         }, { new: true });
 
@@ -58,10 +58,10 @@ export const updateMatch = async (req, res) => {
 }
 export const UpdateMatchTickets = async (req, res) => {
 
-    var { MatchNumber, category, quantity, action } = req.body
+    var { matchNumber, category, quantity, action } = req.body
     if (action === 'TICKET_RESERVED') {
         try {
-            var updatedMatch = await Matches.findOneAndUpdate({ "matchNumber": MatchNumber }, {
+            var updatedMatch = await Matches.findOneAndUpdate({ matchNumber: matchNumber }, {
 
                 $inc: {
                     [`availability.category${category}.available`]: quantity * -1,
@@ -76,7 +76,7 @@ export const UpdateMatchTickets = async (req, res) => {
     }
     else if (action === 'TICKET_PENDING') {
         try {
-            var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
+            var updatedMatch = await Matches.findOneAndUpdate({ matchNumber: matchNumber }, {
                 $inc: {
                     [`availability.category${category}.pending`]: quantity
                 }
@@ -89,7 +89,7 @@ export const UpdateMatchTickets = async (req, res) => {
     }
     else if (action === 'TICKET_CANCELLED') {
         try {
-            var updatedMatch = await Matches.findOneAndUpdate({ MatchNumber: MatchNumber }, {
+            var updatedMatch = await Matches.findOneAndUpdate({ matchNumber: matchNumber }, {
                 $inc: {
                     [`availability.category${category}.pending`]: quantity * -1
                 }
