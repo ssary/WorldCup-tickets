@@ -40,6 +40,7 @@ const matchSchema = new Schema({
   },
   availability: {
     category1: {
+
       available: { type: Number },
       pending: { type: Number, default: 0 },
       price: { type: Number, default: 75 }

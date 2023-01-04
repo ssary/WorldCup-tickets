@@ -3,8 +3,23 @@ import Matches from "../Models/Matches.js";
 
 export const getMatches = async (req, res) => {
     try {
-        const records = await Matches.find();
+        const records = await Matches.find().sort({matchNumber: 1});
         res.status(200).json(records);
+    } catch (e) {
+        res.status(404).json({ message: e.message });
+    }
+}
+export const getRound = async (req, res) => {
+    try {
+        const {round} = req.body;
+        if(round === 1){
+            const records = await Matches.find({$or: [{roundNumber: 1 }, {roundNumber: 2 }, {roundNumber: 3 }]}).sort({matchNumber: 1});
+            res.status(200).json(records);
+        }else{
+            const records = await Matches.find({roundNumber: round}).sort({matchNumber: 1});
+            res.status(200).json(records);
+        }
+        
     } catch (e) {
         res.status(404).json({ message: e.message });
     }
@@ -73,6 +88,23 @@ export const UpdateMatchTickets = async (req, res) => {
         catch (e) {
             res.status(400).json({ message: e.message });
         }
+export const UpdateMatchTickets = async (req, res) => {
+
+    var { matchNumber, category, quantity, action } = req.body
+    if (action === 'TICKET_RESERVED') {
+        try {
+            var updatedMatch = await Matches.findOneAndUpdate({ matchNumber: matchNumber }, {
+
+                $inc: {
+                    [`availability.category${category}.available`]: quantity * -1,
+                    [`availability.category${category}.pending`]: quantity * -1
+                }
+            }, { new: true });
+            res.status(200).json(updatedMatch);
+        }
+        catch (e) {
+            res.status(400).json({ message: e.message });
+        }
     }
     else if (action === 'TICKET_PENDING') {
         try {
@@ -101,7 +133,3 @@ export const UpdateMatchTickets = async (req, res) => {
         }
     }
 }
-
-
-
-

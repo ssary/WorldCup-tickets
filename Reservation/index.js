@@ -53,5 +53,6 @@ async function main() {
     await mongoose.set('strictQuery', true)
     await mongoose.connect(process.env.CONNECTION_URL, mongooseOptions, handleServerStartup)
     await startKafkaProducer();
+
 }
 main()
