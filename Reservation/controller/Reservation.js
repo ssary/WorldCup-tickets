@@ -42,10 +42,10 @@ const getReservations = async (req, res) => {
     }
 }
 const UpdateTicket = async (req, res) => {
-    let { serialNumber} = req.body;
+    let { serialNumber } = req.body;
 
     try {
-        var update= await Reservation.findOneAndUpdate({ serialNumber: serialNumber }, {$set: req.body },{new:true});
+        var update = await Reservation.findOneAndUpdate({ serialNumber: serialNumber }, { $set: req.body }, { new: true });
         res.status(200).json(update)
     }
     catch (e) {
@@ -54,10 +54,10 @@ const UpdateTicket = async (req, res) => {
     }
 }
 const DeleteTicket = async (req, res) => {
-    let { serialNumber} = req.body;
+    let { serialNumber } = req.body;
 
     try {
-       var reservation= await Reservation.findOneAndDelete({ serialNumber: serialNumber });
+        var reservation = await Reservation.findOneAndDelete({ serialNumber: serialNumber });
         res.status(200).json(reservation);
     }
     catch (e) {
@@ -88,45 +88,51 @@ const buyTicket = async (req, res) => {
         console.log("pending sent")
         // Perform Stripe Payment Flow
 
-        
-      try {
-        const token = await stripe.tokens.create({
-          card: {
-            number: reservation.card.number,
-            exp_month: reservation.card.expirationMonth,
-            exp_year: reservation.card.expirationYear,
-            cvc: reservation.card.cvc,
-          },
-        });
-        await stripe.charges.create({
-          amount: reservation.tickets.quantity * reservation.tickets.price*100,
-          currency: 'usd',
-          source: token.id,
-          description: 'FIFA World Cup Ticket Reservation',
-        });
-        await sendKafkaMessage(messagesType.TICKET_RESERVED, {
-          meta: { action: messagesType.TICKET_RESERVED},
-          body: { 
-            matchNumber: reservation.matchNumber,
-            tickets: reservation.tickets,
-          }
-        });
-        console.log("reservation sent")
-      } catch (stripeError) {
-        // Send cancellation message indicating ticket sale failed
-        await sendKafkaMessage(messagesType.TICKET_CANCELLED, {
-          meta: { action: messagesType.TICKET_CANCELLED},
-          body: { 
 
-            matchNumber: reservation.matchNumber,
-            tickets: reservation.tickets,
-          }
-        });
-        console.log("payment failed, ticket cancelled")
-        return res.status(400).send(`could not process payment: ${stripeError.message}`);
-      }
+        try {
+            const token = await stripe.tokens.create({
+                card: {
+                    number: reservation.card.number,
+                    exp_month: reservation.card.expirationMonth,
+                    exp_year: reservation.card.expirationYear,
+                    cvc: reservation.card.cvc,
+                },
+            });
+            await stripe.charges.create({
+                amount: reservation.tickets.quantity * reservation.tickets.price * 100,
+                currency: 'usd',
+                source: token.id,
+                description: 'FIFA World Cup Ticket Reservation',
+            });
+            await sendKafkaMessage(messagesType.TICKET_RESERVED, {
+                meta: { action: messagesType.TICKET_RESERVED },
+                body: {
+                    matchNumber: reservation.matchNumber,
+                    tickets: reservation.tickets,
+                }
+            });
+            console.log("reservation sent")
+        } catch (stripeError) {
+            // Send cancellation message indicating ticket sale failed
+            await sendKafkaMessage(messagesType.TICKET_CANCELLED, {
+                meta: { action: messagesType.TICKET_CANCELLED },
+                body: {
+
+                    matchNumber: reservation.matchNumber,
+                    tickets: reservation.tickets,
+                }
+            });
+            console.log("payment failed, ticket cancelled")
+            return res.status(400).send(`could not process payment: ${stripeError.message}`);
+        }
         var matchNumber = reservation.matchNumber
         var email = reservation.email
+        /**
+         *var info = await axios.get("http://ip-api.com/json")
+         console.log(info.data)
+        info = JSON.stringify(info.data)
+        var country = info.country
+         */
         var { quantity, category, price } = reservation.tickets
         var { name, phone } = req.body
         var newTicket = new Reservation({ serialNumber: v4(), quantity: quantity, Category: category, price: price, MatchNumber: matchNumber, Buyer: { Email: email, Name: name, Phone: phone } })
@@ -147,5 +153,5 @@ const buyTicket = async (req, res) => {
     }
 }
 
-  
+
 module.exports = { UpdateTicket, getReservations, getAllReservations, buyTicket, getReservationWithDegree };
