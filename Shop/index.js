@@ -22,7 +22,7 @@ app.use(rateLimiter);
 
 app.use(easyWaf({
     dryMode: false, //Suspicious requests are only logged and not blocked
-    allowedHTTPMethods: ['GET', 'POST'],
+    allowedHTTPMethods: ['GET', 'POST','PATCH','PUT'],
     ipBlacklist: ['1.1.1.1', '2.2.2.2'],
     ipWhitelist: ['::1', '172.16.0.0/12'],
     queryUrlWhitelist: ['github.com'],
