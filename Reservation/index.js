@@ -41,8 +41,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/reservation', router)
 app.get('/country', async (req,res)=>{
     var info = await axios.get("http://ip-api.com/json")
-    console.log(info.data)
-    info = JSON.stringify(info.data)
+    info = JSON.stringify(info.data.country)
     res.status(200).send(info)
 })
 

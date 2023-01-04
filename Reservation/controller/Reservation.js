@@ -127,15 +127,12 @@ const buyTicket = async (req, res) => {
         }
         var matchNumber = reservation.matchNumber
         var email = reservation.email
-        /**
-         *var info = await axios.get("http://ip-api.com/json")
-         console.log(info.data)
-        info = JSON.stringify(info.data)
-        var country = info.country
-         */
+        var info = await axios.get("http://ip-api.com/json")
+        console.log(info.data)
+        var country = JSON.stringify(info.data.country)
         var { quantity, category, price } = reservation.tickets
         var { name, phone } = req.body
-        var newTicket = new Reservation({ serialNumber: v4(), quantity: quantity, Category: category, price: price, MatchNumber: matchNumber, Buyer: { Email: email, Name: name, Phone: phone } })
+        var newTicket = new Reservation({ serialNumber: v4(), quantity: quantity, Category: category, price: price, MatchNumber: matchNumber, Buyer: { Email: email, Name: name, Phone: phone,Country:country } })
         newTicket.save()
 
 
