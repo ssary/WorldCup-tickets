@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser');
+const axios = require("axios");
 const mongoose = require("mongoose");
 const router = require("./routes/Reservation");
 const { startKafkaProducer } = require('./connectors/kafka');
@@ -38,6 +39,12 @@ app.use(easyWaf({
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/reservation', router)
+app.get('/country', async (req,res)=>{
+    var info = await axios.get("http://ip-api.com/json")
+    console.log(info.data)
+    info = JSON.stringify(info.data)
+    res.status(200).send(info)
+})
 
 const PORT = process.env.PORT || 5001;
 
