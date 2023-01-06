@@ -40,6 +40,33 @@ app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/reservation', router)
 
+app.post('/recaptcha', async (req, res) => {
+    if (!req.body.captcha)
+      return res.json({ success: false, msg: 'Please select captcha' });
+  
+    // Secret key
+    const secretKey = process.env.CAPTCHA;
+  
+    // Verify URL
+    const query = stringify({
+      secret: secretKey,
+      response: req.body.captcha,
+      remoteip: req.connection.remoteAddress
+    });
+    const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`;
+  
+    // Make a request to verifyURL
+    const body = await fetch(verifyURL).then(res => res.json());
+  
+    // If not successful
+    if (body.success !== undefined && !body.success)
+      return res.json({ success: false, msg: 'Failed captcha verification' });
+  
+    // If successful
+    return res.json({ success: true, msg: 'Captcha passed' });
+  });
+  
+
 const PORT = process.env.PORT || 5001;
 
 const mongooseOptions = {
@@ -57,3 +84,4 @@ async function main() {
 }
 
 main()
+
