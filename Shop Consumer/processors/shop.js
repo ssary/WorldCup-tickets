@@ -1,36 +1,32 @@
 const axios = require('axios');
 
+const processSendMessage = async (message)=>{
+  await axios.post("http://localhost:4002/Analytics", {"matchNumber": message.body.matchNumber, "category": message.body.tickets.category,
+   "price": message.body.tickets.price, "state": message.meta.action, "quantity": message.body.tickets.quantity})
+
+  console.log([processSendMessage], message);
+  //return Promise.resolve('[processSendMessage]')
+ }
+
 const processPendingTicket = async (message) => {
   await axios.patch("https://world-cup-shop-microservice.vercel.app/api/matches",{"matchNumber":message.body.matchNumber,"category":message.body.tickets.category,"quantity":message.body.tickets.quantity,"action":message.meta.action});
   console.log('[processPendingTicket]',message)
- //commented out because people keep sending messages
- //local host will change to vercel after deployment
+  await processSendMessage(message)
   return Promise.resolve('[processPendingTicket]')
 };
 
 const processReservedTicket = async (message) => {
   await axios.patch("https://world-cup-shop-microservice.vercel.app/api/matches",{"matchNumber":message.body.matchNumber,"category":message.body.tickets.category,"quantity":message.body.tickets.quantity,"action":message.meta.action});
- // commented out because people keep sending messages
- //local host will change to vercel after deployment
+  await processSendMessage(message)
   console.log('[processReservedTicket]', message)
   return Promise.resolve('[processReservedTicket]')
 };
 const processCancelledTicket = async (message) => {
   await axios.patch("https://world-cup-shop-microservice.vercel.app/api/matches",{"matchNumber":message.body.matchNumber,"category":message.body.tickets.category,"quantity":message.body.tickets.quantity,"action":message.meta.action});
-  // commented out because people keep sending messages
-  //local host will change to vercel after deployment
+  await processSendMessage(message)
    console.log('[processCancelledTicket]', message)
    return Promise.resolve('[processCancelledTicket]')
  };
- 
- const processSendMessage = async (message)=>{
-  await axios.post("http://localhost:4002/Analytics", {"matchNumber": message.body.matchNumber, "category": message.body.tickets.category,
-   "price": message.body.tickets.price, "state": message.meta.action, "quantity": message.body.tickets.quantity})
-
-  console.log([processSendMessage], message);
-  return Promise.resolve('[processSendMessage]')
- }
-
 
  const processMasterlist = async (message) => {
 
