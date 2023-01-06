@@ -1,5 +1,29 @@
 const mongoose = require("mongoose")
+var mongooseIntlPhoneNumber = require('mongoose-intl-phone-number');
 const { Schema } = mongoose;
+
+const BuyerSchema = new Schema({
+    Name: String,
+        Email: {
+            type: String,
+            trim: true,
+            lowercase: true,
+            index: true,
+            unique: true,
+            sparse: true,
+            required: 'Email address is required',
+            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+        },
+        Country:{type:String} 
+});
+BuyerSchema.plugin(mongooseIntlPhoneNumber,{
+    hook:'validate',
+    phoneNumberField:'Phone',
+    nationalFormatField:'nationalFormat',
+    internationalFormat:'internationalFormat',
+    countryCodeField:'countryCode',
+    });
+
 
 const ticketSchema = new Schema({
     serialNumber: {
@@ -14,27 +38,7 @@ const ticketSchema = new Schema({
     price: {
         type: Number
     },
-    Buyer: {Name: String,
-        Email: {
-            type: String,
-            trim: true,
-            lowercase: true,
-            index: true,
-            unique: true,
-            sparse: true,
-            required: 'Email address is required',
-            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
-        },
-        Phone: {
-            type: String,
-            index: true,
-            unique: true,
-            sparse: true,
-            match: [/^01[0125][0-9]{8}$/gm, 'fill a valid phone number'
-            ]
-        },
-        Country:{type:String}
-    },
+    Buyer: BuyerSchema,
     MatchNumber:{
         type:Number
     },
@@ -45,6 +49,8 @@ const ticketSchema = new Schema({
     }
 
 });
+
+
 
 ticketSchema.pre('save',function(next){
  switch(this.Category){
