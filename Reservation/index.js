@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const axios = require("axios");
 const mongoose = require("mongoose");
@@ -19,7 +20,7 @@ const rateLimiter = rateLimit({
 const app = express();
 
 app.use(helmet());
-
+app.use(cors());
 app.use(rateLimiter);
 
 app.use(easyWaf({
