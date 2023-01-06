@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const processSendMessage = async (message)=>{
-  await axios.post("http://localhost:4002/Analytics", {"matchNumber": message.body.matchNumber, "category": message.body.tickets.category,
+  await axios.post("https://world-cup-analytics-microservice.vercel.app/Analytics", {"matchNumber": message.body.matchNumber, "category": message.body.tickets.category,
    "price": message.body.tickets.price, "state": message.meta.action, "quantity": message.body.tickets.quantity})
 
   console.log([processSendMessage], message);
