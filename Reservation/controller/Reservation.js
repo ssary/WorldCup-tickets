@@ -129,7 +129,7 @@ const buyTicket = async (req, res) => {
         var email = reservation.email
         var info = await axios.get("http://ip-api.com/json")
         console.log(info.data)
-        var country = JSON.stringify(info.data.country)
+        var country = info.data.country
         var { quantity, category, price } = reservation.tickets
         var { name, phone } = req.body
         var newTicket = new Reservation({ serialNumber: v4(), quantity: quantity, Category: category, price: price, MatchNumber: matchNumber, Buyer: { Email: email, Name: name, Phone: phone,Country:country } })

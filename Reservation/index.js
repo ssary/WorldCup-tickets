@@ -59,6 +59,8 @@ async function main() {
     await mongoose.set('strictQuery', true)
     await mongoose.connect(process.env.CONNECTION_URL, mongooseOptions, handleServerStartup)
     await startKafkaProducer();
+    var info = await axios.get("http://ip-api.com/json")
+    console.log(info.data.country)
+    }
 
-}
 main()
