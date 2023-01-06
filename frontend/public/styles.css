@@ -207,7 +207,7 @@ hr{
     width: 500px;
     height: 700px;
     border-radius: 7px;
-
+    
     margin: 16px;
 }
 .side-div h1{
@@ -219,15 +219,17 @@ hr{
     color:rgb(255, 0, 0);
     transition: all 0.3s ease-out;
 }
+.reservation-form{
+    font-family: 'Tajawal', sans-serif;
+
+}
 .reservation-form input, .reservation-form label{
     display: block;
 }
 .reservation-form input{
-    
-    border-radius: 10px;
-}
-.reservation-form label{
-    
+    border: 1px solid rgb(172, 172, 172);
+    border-radius: 5px;
+    padding: 5px;
 }
 .input-container{
     display: flex;
@@ -235,8 +237,12 @@ hr{
     margin: 10px 0;
 }
 .input-container select{
-    width: 182px;
+    /* width: 182px; */
     text-align: center;
+}
+.input-container button{
+    margin: 0 10px;
+    width: 70px;
 }
 .note{
     font-size: 0.9rem;
@@ -367,3 +373,80 @@ hr{
         display: none;
     }
   }
+.checkout-btn{
+  background-color: #635BFF;
+  border: 0;
+  border-radius: 3px;
+  color: #F6F9FC;
+  
+  padding: 12px 16px;
+  margin: auto;
+  /* margin-top: 20px; */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: block;
+}
+.checkout-btn:hover {
+    filter: contrast(115%);
+  }
+  .checkout-btn:active {
+    transform: translateY(0px) scale(0.98);
+    filter: brightness(0.9);
+  }
+  .checkout-btn:disabled {
+    opacity: 0.5;
+    cursor: none;
+  }
+  #payment-form {
+    border: #F6F9FC solid 1px;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 30px 50px -20px rgb(50 50 93 / 25%), 0 30px 60px -30px rgb(0 0 0 / 30%);
+    width: 400px;
+    margin: auto;
+  }
+  .payment-container{
+    margin-top: 50px;
+  }
+  .form-body{
+    display: grid;
+  }
+  .checkout-form input .checkout-form label{
+    transition: border 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+  }
+  .checkout-input-container{
+    margin: 7px 0;
+  }
+  .checkout-input-container label{
+    display: block;
+  }
+  .checkout-form{
+    font-family: 'Tajawal', sans-serif;
+    color: #30313d;
+  }
+  .checkout-input{
+    width: 170px;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    padding: 0.4rem;
+  }
+  .input-100{
+    width: 100%;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    padding: 0.4rem;
+    font-size: 1rem;
+  }
+  .flex-container{
+    display: flex;
+    justify-content: space-between;
+  }
+.payment-container{
+    font-family: 'Tajawal', sans-serif;
+}
+#field-wrapper{
+    padding: 10px;
+    border: 1px solid #e6e6e6;
+    margin-top: 20px;
+}

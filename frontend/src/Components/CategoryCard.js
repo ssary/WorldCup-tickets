@@ -18,7 +18,7 @@ function CategoryCard(props){
     return(
         <div className={props.currentChosen === props.category? "categoryCard chosenCard" : "categoryCard"}>
             <div>
-                <h1 className={props.currentChosen === props.category? "chosen": ""}>Category {props.category}</h1>
+                <h1 style={{fontSize: "1rem"}} className={props.currentChosen === props.category? "chosen": ""}>Category {props.category}</h1>
             </div>
             <div>
                 <button onClick={() => {props.onChoose(props.category)}} className="btn btn-success">${getPrice(props.category)}</button>

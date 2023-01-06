@@ -33,7 +33,7 @@ function Reservation(props){
                 <CategoryCard matchInfo={matchInfo} currentChosen={chosen} onChoose={handleChoose} category={1}/>
                 <CategoryCard matchInfo={matchInfo} currentChosen={chosen} onChoose={handleChoose} category={2}/>
                 <CategoryCard matchInfo={matchInfo} currentChosen={chosen} onChoose={handleChoose} category={3}/>
-                {showForm? <ReservationForm category={chosen} /> : <></>}
+                {showForm? <ReservationForm matchInfo={matchInfo} category={chosen} /> : <></>}
             </div>
             
             <div className="stadium">

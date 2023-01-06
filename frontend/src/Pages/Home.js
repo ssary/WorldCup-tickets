@@ -99,10 +99,6 @@ function Home() {
       <div className="match-containter">
       {type !== ""? <h1 className="type-h1">{type}</h1> : <></>}
       {matches.map(match => (<MatchCard matchInfo={match} />))}
-      {/* <Col><MatchCard /></Col>
-      <Col><MatchCard /></Col>
-      <Col><MatchCard /></Col>
-      <Col><MatchCard /></Col> */}
       </div>
       </div>
     </div>
