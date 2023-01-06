@@ -12,7 +12,7 @@ const kafkaMessageValidation = {
         action: Joi.string().valid(messages.TICKET_RESERVED, messages.TICKET_PENDING, messages.TICKET_CANCELLED).required(),
       }).unknown(false),
       body: Joi.object().keys({
-        matchNumber: Joi.number().required(),
+        matchNumber: Joi.number().less(65).required(),
         tickets: Joi.object().keys({
           category: Joi.number().strict().valid(1, 2, 3).required(),
           quantity: Joi.number().strict().min(1).max(2).required(),

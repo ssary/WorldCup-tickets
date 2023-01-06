@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser');
+const axios = require("axios");
 const mongoose = require("mongoose");
 const router = require("./routes/Reservation");
 const { startKafkaProducer } = require('./connectors/kafka');
@@ -22,7 +23,7 @@ app.use(helmet());
 app.use(rateLimiter);
 
 app.use(easyWaf({
-    dryMode: true, //Suspicious requests are only logged and not blocked
+    dryMode: false, //Suspicious requests are only logged and not blocked
     allowedHTTPMethods: ['GET', 'POST'],
     ipBlacklist: ['1.1.1.1', '2.2.2.2'],
     ipWhitelist: ['::1', '172.16.0.0/12'],
@@ -39,6 +40,33 @@ app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/reservation', router)
 
+app.post('/recaptcha', async (req, res) => {
+    if (!req.body.captcha)
+      return res.json({ success: false, msg: 'Please select captcha' });
+  
+    // Secret key
+    const secretKey = process.env.CAPTCHA;
+  
+    // Verify URL
+    const query = stringify({
+      secret: secretKey,
+      response: req.body.captcha,
+      remoteip: req.connection.remoteAddress
+    });
+    const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`;
+  
+    // Make a request to verifyURL
+    const body = await fetch(verifyURL).then(res => res.json());
+  
+    // If not successful
+    if (body.success !== undefined && !body.success)
+      return res.json({ success: false, msg: 'Failed captcha verification' });
+  
+    // If successful
+    return res.json({ success: true, msg: 'Captcha passed' });
+  });
+  
+
 const PORT = process.env.PORT || 5001;
 
 const mongooseOptions = {
@@ -53,6 +81,7 @@ async function main() {
     await mongoose.set('strictQuery', true)
     await mongoose.connect(process.env.CONNECTION_URL, mongooseOptions, handleServerStartup)
     await startKafkaProducer();
-
 }
+
 main()
+

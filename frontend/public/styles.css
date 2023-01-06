@@ -22,6 +22,10 @@
 .brand{
     color: rgb(255, 255, 255);
 }
+.analytics-nav{
+    color: rgb(255, 255, 255);
+    
+}
 .main-header h1{
     font-size: 3rem;
     color: rgb(255, 255, 255);
@@ -78,6 +82,11 @@ body{
 .buy-btn{
     font-size: 1rem;
     width: 115px;
+}
+.btn-soldOut{
+    font-size: 1rem;
+    width: 115px;
+    pointer-events: none;
 }
 .my-btn{
     font-size: 1rem;
@@ -318,6 +327,15 @@ hr{
 .title{
     font-size: 3rem;
     font-weight:900;
+}
+
+.unavailable_match{
+    border-radius: 7px;
+    padding: 10px;
+    margin: 40px 0;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
 }
 @media only screen and (max-width: 800px) {
     .match-card{

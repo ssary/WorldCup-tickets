@@ -10,9 +10,9 @@ import easyWaf from "easy-waf";
 const app = express();
 dotenv.config();
 const rateLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 24 hrs in milliseconds
+    windowMs: 60 * 60 * 1000, // 1 hrs in milliseconds
     max: 1000,
-    message: 'You have exceeded the 100 requests in 24 hrs limit!',
+    message: 'You have exceeded the 1000 requests in 1 hrs limit!',
     standardHeaders: true,
     legacyHeaders: false,
 });
@@ -21,8 +21,8 @@ app.use(helmet());
 app.use(rateLimiter);
 
 app.use(easyWaf({
-    dryMode: true, //Suspicious requests are only logged and not blocked
-    allowedHTTPMethods: ['GET', 'POST'],
+    dryMode: false, //Suspicious requests are only logged and not blocked
+    allowedHTTPMethods: ['GET', 'POST','PATCH','PUT'],
     ipBlacklist: ['1.1.1.1', '2.2.2.2'],
     ipWhitelist: ['::1', '172.16.0.0/12'],
     queryUrlWhitelist: ['github.com'],
