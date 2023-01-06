@@ -5,10 +5,13 @@
   "scripts": {
     "start": "node index.js",
     "app": "nodemon index.js",
+    "test": "jest --watchAll",
     "start-dev": "nodemon ./index.js"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.20.2",
     "axios": "^0.27.2",
+    "babel-jest": "^29.3.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
     "config": "^3.3.7",
@@ -21,6 +24,11 @@
     "mongodb": "^4.6.0",
     "mongoose": "^6.3.4",
     "nodemon": "^2.0.16",
+    "ts-jest": "^29.0.3",
     "validation": "^0.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "supertest": "^6.3.3"
   }
 }
