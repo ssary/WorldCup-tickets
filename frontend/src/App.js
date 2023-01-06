@@ -4,6 +4,7 @@ import Reservation from "./Pages/Reservation";
 import { Route, Routes } from "react-router-dom";
 import { ReactDOM } from "react";
 import Payment from "./Pages/Payment";
+import Conformation from "./Pages/Conformation";
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/conformation" element={<Conformation />} />
       </Routes>
     </div>
   );

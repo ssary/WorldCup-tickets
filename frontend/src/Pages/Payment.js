@@ -6,16 +6,17 @@ import { useLocation } from "react-router-dom";
 
 function Payment(){
     const location = useLocation()
-    const {matchInfo, category , email, phone, quantity} = location.state
+    const {matchInfo, category , email, phone, quantity, name} = location.state
     console.log("matchInfo: " + matchInfo);
     console.log("email: " + email);
     console.log("phone: " + phone);
     console.log("quantity: " + quantity);
+    console.log("name: " + name);
     return(
         <div className="payment-container">
         <h1>{matchInfo.homeTeam} vs {matchInfo.awayTeam}</h1>
         <p style={{color: "blue"}}>Category {category}</p>
-        <CheckoutForm matchInfo={matchInfo} category={category} email={email} phone={phone} quantity={quantity} />
+        <CheckoutForm matchInfo={matchInfo} category={category} email={email} phone={phone} quantity={quantity} name={name} />
         </div>
         
     )
