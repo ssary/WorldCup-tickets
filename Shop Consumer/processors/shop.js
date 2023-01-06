@@ -1,8 +1,8 @@
 const axios = require('axios');
 
 const processPendingTicket = async (message) => {
+  await axios.patch("https://world-cup-shop-microservice.vercel.app/api/matches",{"matchNumber":message.body.matchNumber,"category":message.body.tickets.category,"quantity":message.body.tickets.quantity,"action":message.meta.action});
   console.log('[processPendingTicket]',message)
- await axios.patch("https://world-cup-shop-microservice.vercel.app/api/matches",{"matchNumber":message.body.matchNumber,"category":message.body.tickets.category,"quantity":message.body.tickets.quantity,"action":message.meta.action});
  //commented out because people keep sending messages
  //local host will change to vercel after deployment
   return Promise.resolve('[processPendingTicket]')
