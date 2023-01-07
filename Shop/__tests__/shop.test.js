@@ -308,7 +308,7 @@ const newMatchStub =
                 "price": 195
             }
         },
-        "matchNumber": 68,
+        "matchNumber": 70,
         "roundNumber": 2,
         "dateUtc": "2022-11-27T19:00:00.000Z",
         "location": "Al Bayt Stadium",
@@ -318,12 +318,13 @@ const newMatchStub =
         "awayTeamScore": 0
     }
 
-describe('Adding new Match to the shop database', ()=>{
+describe.only('Adding new Match to the shop database', ()=>{
     describe('given a new match that doesn\'t exist in the DB', ()=>{
     it('should add a match given the right parameters',async ()=>{
-        const newMatch = new Matches(newMatchStub)
+        let newMatch = new Matches(newMatchStub)
         await newMatch.save();
         const matchNumber = newMatch.matchNumber
+        console.log(newMatch);
         return request(SHOP_BASE_URL)
         .get(`/${matchNumber}`)
         .set('Accept', 'application/json')
