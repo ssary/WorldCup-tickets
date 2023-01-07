@@ -23,7 +23,6 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(rateLimiter);
-app.use(cors());
 
 app.use(easyWaf({
     dryMode: false, //Suspicious requests are only logged and not blocked
