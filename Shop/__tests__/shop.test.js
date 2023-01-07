@@ -1,49 +1,53 @@
-import supertest from 'supertest';
 import app from '../app.js';
 import request from 'supertest'
+import { serverconnection, closeConnection } from '../index.js';
+import Matches from '../Models/Matches.js';
+import { json } from 'body-parser';
+// restart connection to the database before each test
+// beforeEach(() => {
+//     serverconnection();
+// })
+
+// afterEach(()=>{
+//     closeConnection();
+// })
+// afterEach(() => {
+//     mongoose.connection.close();
+// })
+
+// beforeEach(()=>{
+//     jest.clearAllMocks();
+//     jest.resetAllMocks();
+// });
 
 jest.setTimeout(20000);
-/*
-{"_id":{"$oid":"63a754a2ca2e3b50c7770069"}
-,"matchNumber":{"$numberInt":"28"}
-,"roundNumber":{"$numberInt":"2"}
-,"dateUtc":{"$date":{"$numberLong":"1669575600000"}}
-,"location":"Al Bayt Stadium"
-,"homeTeam":"Spain"
-,"awayTeam":"Germany"
-,"homeTeamScore":{"$numberInt":"0"}
-,"awayTeamScore":{"$numberInt":"0"}
-,"availability":{"category1":{"available":{"$numberInt":"20"},"pending":{"$numberInt":"0"},"price":{"$numberInt":"75"}}
-,"category2":{"available":{"$numberInt":"20"},"pending":{"$numberInt":"0"},"price":{"$numberInt":"125"}}
-,"category3":{"available":{"$numberInt":"20"},"pending":{"$numberInt":"0"},"price":{"$numberInt":"195"}}}
-,"__v":{"$numberInt":"0"}}
-*/
-const matchStub = {
-    matchNumber: 28,
-    roundNumber: 2,
-    dateUtc: new Date(1669575600000),
-    location: "Al Bayt Stadium",
-    homeTeam: "Spain",
-    awayTeam: "Germany",
-    homeTeamScore: 0,
-    awayTeamScore: 0,
-    availability: {
-        category1: {
-            available: 20,
-            pending: 0,
-            price: 75
-        },
-        category2: {
-            available: 20,
-            pending: 0,
-            price: 125
-        },
-        category3: {
-            available: 20,
-            pending: 0,
-            price: 195}
-}
-};
+const SHOP_BASE_URL = 'http://localhost:5001/api/matches';
+// const matchStub = {
+//     matchNumber: 28,
+//     roundNumber: 2,
+//     dateUtc: "2022-11-27T19:00:00.000Z",
+//     location: "Al Bayt Stadium",
+//     homeTeam: "Spain",
+//     awayTeam: "Germany",
+//     homeTeamScore: 0,
+//     awayTeamScore: 0,
+//     availability: {
+//         category1: {
+//             available: 20,
+//             pending: 0,
+//             price: 75
+//         },
+//         category2: {
+//             available: 20,
+//             pending: 0,
+//             price: 125
+//         },
+//         category3: {
+//             available: 20,
+//             pending: 0,
+//             price: 195}
+// }
+// };
 
 
 describe('GET /api/matches/:matchNumber', () => {
@@ -51,14 +55,50 @@ describe('GET /api/matches/:matchNumber', () => {
         /*const { response, statusCode } = await app.get(`/api/matches/28`);
         expect(statusCode).toBe(200);
         expect(response.matchNumber).toBe(matchStub.matchNumber);*/
-        request(app).get('/api/matches/28')
+
+        /*
+         const matchNumber = req.params.matchNumber
+        const Match = await Matches.findOne({ matchNumber: matchNumber })
+        if(!Match)
+            res.status(404).json({ message: "Match not found" })
+        else
+            res.status(200).json(Match)
+        */
+
+        let matchSample = await Matches.findOne({matchNumber: 28})
+        
+        matchSample.dateUtc = (matchSample.dateUtc).toString()
+        console.log(matchSample.dateUtc.toUTCString());
+        return request(SHOP_BASE_URL).get('/28')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
-        .expect(200, matchStub);
+        .expect(200)
+        .expect(function(res){
+            //expect(res.body.matchNumber).toBe(matchSample.matchNumber)
+            expect(res.body).toMatchObject(matchSample);
+        });
+        // .expect(function(res) {
+        //     expect(res.body.matchNumber).toEqual(matchStub.matchNumber);
+        //     expect(res.body.roundNumber).toEqual(matchStub.roundNumber);
+        //     expect(res.body.dateUtc).toEqual(matchStub.dateUtc);
+        //     expect(res.body.location).toEqual(matchStub.location);
+        //     expect(res.body.homeTeam).toEqual(matchStub.homeTeam);
+        //     expect(res.body.awayTeam).toEqual(matchStub.awayTeam);
+        //     expect(res.body.homeTeamScore).toEqual(matchStub.homeTeamScore);
+        //     expect(res.body.awayTeamScore).toEqual(matchStub.awayTeamScore);
+        //     expect(res.body.availability.category1).toEqual(matchStub.availability.category1);
+        //     expect(res.body.availability.category2).toEqual(matchStub.availability.category2);
+        //     expect(res.body.availability.category3).toEqual(matchStub.availability.category3);
+        // });
+    });
+
+    it('should return 404 Not Found if matchNumber does not exist', async () => {
+        return request(SHOP_BASE_URL).get('/90')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(404);
     });
 });
-
-
 
 
 
@@ -130,88 +170,182 @@ describe("GET api/matches", () => {
         /*const { body, statusCode } = await supertest(app).get('/api/matches')
         expect(statusCode).toBe(200);
         expect(body).toBe(matchesStub);*/
-        request(app).get('/api/matches/')
+        return request(SHOP_BASE_URL).get('/')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
-        .expect(200, matchesStub);
+        .expect(200)
+        .expect(function(res){
+            expect(res.body).toMatchObject(matchesStub);
+        });
     })
 })
 
-
-
-
-
-
-const filterRoundStub = [{
-    "availability": {
-        "category1": {
-            "available": 20,
-            "pending": 0,
-            "price": 75
+const filterRoundStub = [
+    {
+        "availability": {
+            "category1": {
+                "available": 20,
+                "pending": 0,
+                "price": 75
+            },
+            "category2": {
+                "available": 20,
+                "pending": 0,
+                "price": 125
+            },
+            "category3": {
+                "available": 18,
+                "pending": 35,
+                "price": 195
+            }
         },
-        "category2": {
-            "available": 20,
-            "pending": 0,
-            "price": 125
-        },
-        "category3": {
-            "available": 20,
-            "pending": 0,
-            "price": 195
-        }
+        "_id": "63a754a3ca2e3b50c777008a",
+        "matchNumber": 61,
+        "roundNumber": 6,
+        "dateUtc": "2022-12-13T19:00:00.000Z",
+        "location": "TBA",
+        "homeTeam": "TBA",
+        "awayTeam": "TBA",
+        "homeTeamScore": 0,
+        "awayTeamScore": 0,
+        "__v": 0
     },
-    "_id": "63a754a3ca2e3b50c777008c",
-    "matchNumber": 63,
-    "roundNumber": 7,
-    "dateUtc": "2022-12-17T15:00:00.000Z",
-    "location": "TBA",
-    "homeTeam": "TBA",
-    "awayTeam": "TBA",
-    "homeTeamScore": 0,
-    "awayTeamScore": 0,
-    "__v": 0
-},
-{
-    "availability": {
-        "category1": {
-            "available": 20,
-            "pending": 2,
-            "price": 75
+    {
+        "availability": {
+            "category1": {
+                "available": 20,
+                "pending": 0,
+                "price": 75
+            },
+            "category2": {
+                "available": 20,
+                "pending": 0,
+                "price": 125
+            },
+            "category3": {
+                "available": 20,
+                "pending": 5,
+                "price": 195
+            }
         },
-        "category2": {
-            "available": 20,
-            "pending": 0,
-            "price": 125
-        },
-        "category3": {
-            "available": 20,
-            "pending": 0,
-            "price": 195
+        "_id": "63a754a3ca2e3b50c777008b",
+        "matchNumber": 62,
+        "roundNumber": 6,
+        "dateUtc": "2022-12-14T19:00:00.000Z",
+        "location": "TBA",
+        "homeTeam": "TBA",
+        "awayTeam": "TBA",
+        "homeTeamScore": 0,
+        "awayTeamScore": 0,
+        "__v": 0
+    }
+]
+
+
+describe('Filter the matches on roundNumber', () => {
+    describe('given a valid roundNumber', ()=>{
+        it('Should return all matches in the given round', () => {
+        return request(SHOP_BASE_URL)
+          .post('/filterRound')
+          .send({round: 6})
+          .set('Accept', 'application/json')
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .expect(function(res){
+              expect(res.body).toMatchObject(filterRoundStub);
+          });
+      });})
+    
+    describe('If a given roundNumber is (invalid) not in interval [1,7]', ()=>{
+        it('should return 400 bad request', () => {
+            return request(SHOP_BASE_URL)
+              .post('/filterRound')
+              .send({round: 10})
+              .set('Accept', 'application/json')
+              .expect('Content-Type', /json/)
+              .expect(400)
+          });
+    })
+});
+/*
+export const addMatches = async (req, res) => {
+
+    try {
+        const match = req.body;
+        let exists = await Matches.exists({ matchNumber: match.matchNumber });
+        if (exists) {
+            const updatedMatch = await Matches.findOneAndUpdate({ matchNumber: match.matchNumber }, {
+                $set: req.body,
+            }, { new: true });
+            res.status(200).json(updatedMatch)
         }
-    },
-    "_id": "63b455c2e9e4f71e8ff9547f",
-    "matchNumber": 64,
-    "roundNumber": 7,
-    "dateUtc": "2022-11-25T19:00:00.000Z",
-    "location": "Al Bayt stadium",
-    "homeTeam": "Argentina",
-    "awayTeam": "France",
-    "homeTeamScore": 0,
-    "awayTeamScore": 0,
-    "__v": 0
-}]
+        else{
+        const newMatch = new Matches(match);
+        await newMatch.save();
+        res.status(200).json(match);
+    }}
+    catch (e) {
+        res.status(400).json({ message: e.message })
+    }
+}
+*/
+const newMatchStub = 
+    {
+        "availability": {
+            "category1": {
+                "available": 20,
+                "pending": 0,
+                "price": 75
+            },
+            "category2": {
+                "available": 20,
+                "pending": 0,
+                "price": 125
+            },
+            "category3": {
+                "available": 20,
+                "pending": 0,
+                "price": 195
+            }
+        },
+        "matchNumber": 68,
+        "roundNumber": 2,
+        "dateUtc": "2022-11-27T19:00:00.000Z",
+        "location": "Al Bayt Stadium",
+        "homeTeam": "TBA",
+        "awayTeam": "TBA",
+        "homeTeamScore": 0,
+        "awayTeamScore": 0
+    }
 
-
-describe('POST /api/matches/filterRound', () => {
-    it('Should get matches by round', () => {
-      request(app)
-        .post('/api/matches/filterRound')
-        .send({round: 1})
+describe('Adding new Match to the shop database', ()=>{
+    describe('given a new match that doesn\'t exist in the DB', ()=>{
+    it('should add a match given the right parameters',async ()=>{
+        const newMatch = new Matches(newMatchStub)
+        await newMatch.save();
+        const matchNumber = newMatch.matchNumber
+        return request(SHOP_BASE_URL)
+        .get(`/${matchNumber}`)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
-        .expect(200, filterRoundStub)
-    });
-});
-
-
-
+        .expect(200)
+        .expect(function(res){
+            expect(res.body).toMatchObject(newMatch);
+        });
+    })
+})
+    describe('given bad parameters', () => {
+        
+        it('Should return status 400', async()=>{
+            const newMatch = new Matches(newMatchStub)
+            //await newMatch.save()
+            return request(SHOP_BASE_URL)
+            .post('/')
+            .send(newMatch)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(400)
+      })
+    })
+    
+})

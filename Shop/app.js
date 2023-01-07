@@ -18,7 +18,7 @@ import easyWaf from "easy-waf";
 //const easyWaf = require("easy-waf");
 const app = express();
 dotenv.config();
-app.use('cors')
+app.use(cors())
 const rateLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hrs in milliseconds
     max: 1000,
