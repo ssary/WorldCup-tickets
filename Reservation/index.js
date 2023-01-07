@@ -63,4 +63,6 @@ async function main() {
     console.log(info.data.country)
     }
 
+module.exports = app;    
+
 main()

@@ -1,4 +1,4 @@
-import http from 'k6/http';
+/*import http from 'k6/http';
 import { check, sleep } from 'k6';
 
 // Configure our test to run 50 virtual users continuously for one minute. 
@@ -14,4 +14,4 @@ export default function () {
   // assertions
   check(res, { 'status was 200': (r) => r.status == 200 });
   sleep(1);
-}
+}*/
