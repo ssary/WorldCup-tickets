@@ -9,7 +9,6 @@ require('dotenv').config();
 const easyWaf = require('easy-waf');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const cors = require('cors');
 const {stringify} = require('querystring');
 
 const rateLimiter = rateLimit({
