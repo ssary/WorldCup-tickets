@@ -454,11 +454,13 @@ hr{
 .conformation-container{
     font-family: 'Tajawal', sans-serif;
     border: 1px solid #e6e6e6;
+    box-shadow: 0 30px 50px -20px rgb(50 50 93 / 25%), 0 30px 60px -30px rgb(0 0 0 / 30%);
     border-radius: 3px;
     padding: 50px;
     width: 600px;
     margin: auto;
     margin-top: 70px;
+
 }
 .conformation-container h1{
     font-size: 1.5rem;

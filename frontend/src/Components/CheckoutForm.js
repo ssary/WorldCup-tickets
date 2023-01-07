@@ -100,6 +100,7 @@ export default function CheckoutForm(props) {
     }else{
         alert("reCAPTCHA required")
         e.preventDefault();
+        window.location.reload();
     }
       
     
