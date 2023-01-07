@@ -68,8 +68,8 @@ const DeleteTicket = async (req, res) => {
 const buyTicket = async (req, res) => {
     try {
         var reservation = req.body.reservation
+        console.log(req.body);
         // validate payload before proceeding with reservations
-        console.log(reservation)
         const validationError = validateTicketReservationDto(reservation);
         if (validationError) {
             return res.status(403).send(validationError.message);

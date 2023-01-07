@@ -9,6 +9,8 @@ require('dotenv').config();
 const easyWaf = require('easy-waf');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const cors = require('cors');
+const {stringify} = require('querystring');
 
 const rateLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 24 hrs in milliseconds
@@ -22,6 +24,7 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(rateLimiter);
+app.use(cors());
 
 app.use(easyWaf({
     dryMode: false, //Suspicious requests are only logged and not blocked
@@ -57,10 +60,10 @@ app.post('/recaptcha', async (req, res) => {
     const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`;
   
     // Make a request to verifyURL
-    const body = await fetch(verifyURL).then(res => res.json());
+    const body = await axios.get(verifyURL);
   
     // If not successful
-    if (body.success !== undefined && !body.success)
+    if (body.data.success !== undefined && !body.data.success)
       return res.json({ success: false, msg: 'Failed captcha verification' });
   
     // If successful
