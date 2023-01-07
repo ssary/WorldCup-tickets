@@ -470,3 +470,9 @@ hr{
 .conformation-info h1, .conformation-info p{
     display: inline;
 }
+.textLine{
+    text-decoration: line-through;
+}
+.textOpac{
+    opacity: 0.5;
+}

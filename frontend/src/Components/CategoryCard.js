@@ -22,18 +22,21 @@ function CategoryCard(props){
     var soldOut = (availableCategory === 0)
 
     var btnClass = 'buy-btn';
-    var btnText = getPrice(props.category);
+    var btnText = `$${getPrice(props.category)}`;
     var btnColor = 'btn-success';
+    var textClass = "";
 
     if(soldOut){
         btnClass = 'btn-soldOut'
         btnText = 'Sold Out'
         btnColor = 'btn-danger'
+        textClass = "textLine"
     }
     if(unavailable){
         btnClass = 'btn-soldOut'
         btnText = 'Unavailable'
         btnColor = 'btn-secondary'
+        textClass = "textOpac"
     }
 
     function getPrice(c){
@@ -50,7 +53,7 @@ function CategoryCard(props){
     return(
         <div className={props.currentChosen === props.category? "categoryCard chosenCard" : "categoryCard"}>
             <div>
-                <h1 style={{fontSize: "1rem"}} className={props.currentChosen === props.category? "chosen": ""}>Category {props.category}</h1>
+                <h1 style={{fontSize: "1rem"}} className={props.currentChosen === props.category? "chosen": textClass}>Category {props.category}</h1>
             </div>
             <div>
                 <button onClick={() => {props.onChoose(props.category)}} className={`btn ${btnClass} ${btnColor}`}>{btnText}</button>
