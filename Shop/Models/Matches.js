@@ -59,5 +59,5 @@ const matchSchema = new Schema({
 }
 
 );
-const Matches = mongoose.model('Matches', matchSchema, 'Shop');
+const Matches = mongoose.model('Matches', matchSchema, 'Matches');
 export default Matches;
