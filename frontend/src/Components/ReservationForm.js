@@ -51,7 +51,7 @@ function ReservationForm(props){
             <div className="input-container">
                 <label>Phone Number</label>
                 <PhoneInput 
-                international={false}
+                international={true}
                 placeholder="Enter phone number"
                 value={phone}
                 onChange={setPhone} 

@@ -450,3 +450,23 @@ hr{
     border: 1px solid #e6e6e6;
     margin-top: 20px;
 }
+
+.conformation-container{
+    font-family: 'Tajawal', sans-serif;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    padding: 50px;
+    width: 600px;
+    margin: auto;
+    margin-top: 70px;
+}
+.conformation-container h1{
+    font-size: 1.5rem;
+}
+.conformation-body{
+    display: flex;
+    justify-content: center;
+}
+.conformation-info h1, .conformation-info p{
+    display: inline;
+}

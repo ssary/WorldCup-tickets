@@ -5,7 +5,8 @@ import axios from 'axios';
 import CreditCardInput from 'react-credit-card-input';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
-import Recaptcha from './Recaptcha';
+import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 var _ = require("lodash");
 
 export default function CheckoutForm(props) {
@@ -13,9 +14,8 @@ export default function CheckoutForm(props) {
   const [cardNumber, setCardNumber] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [cvc, setCvc] = useState("");
-  const [focus, setFocus] = useState('');
-  const [error, setError] = useState(true);
-  const [pay, setPay] = useState(false);
+  const navigate = useNavigate();
+
 
   const price1 = props.matchInfo.availability.category1.price;
   const price2 = props.matchInfo.availability.category2.price;
@@ -61,36 +61,75 @@ export default function CheckoutForm(props) {
 
 
   const handleSubmit = async (e) => {
-    if(window.recaptchaVerified===true){
-      window.location = "https://www.google.com"
-    }else{
-      alert("reCAPTCHA required")
-    }
-    e.preventDefault();
-      const customerDetails = {
-        reservation: {
-            email: props.email,
-            matchNumber: props.matchInfo.matchNumber,
-            tickets: {
-                category: props.category,
-                quantity: props.quantity,
-                price: getPrice(props.category)
-            },
-            card: {
-                number: cardNumber,
-                expirationMonth: expirationDate.split(" / ")[0],
-                expirationYear: expirationDate.split(" / ")[1],
-                cvc: cvc
-            }
-        },
-        name: props.name,
-        phone: props.phone
-    }
-    // axios.post("http://localhost:5001/api/reservation", JSON.stringify(customerDetails), {headers: {'Content-Type': 'application/json'}});
-    console.log(customerDetails);
     setIsLoading(true);
+    e.preventDefault();
+    console.log(window.recaptchaVerified);
+    if(window.recaptchaVerified===true)
+    {
+        e.preventDefault();
+        console.log(window.location);
+        const customerDetails = {
+          reservation: {
+              email: props.email,
+              matchNumber: props.matchInfo.matchNumber,
+              tickets: {
+                  category: props.category,
+                  quantity: parseInt(props.quantity),
+                  price: getPrice(props.category)
+              },
+              card: {
+                  number: cardNumber,
+                  expirationMonth: parseInt(expirationDate.split(" / ")[0]),
+                  expirationYear: parseInt(expirationDate.split(" / ")[1]),
+                  cvc: cvc
+              }
+          },
+          name: props.name,
+          phone: props.phone
+      }
+      try{
+        var response = await axios.post("http://localhost:4000/api/reservation", JSON.stringify(customerDetails), {headers: {'Content-Type': 'application/json'}})
+        navigate("/conformation", {state: {"matchInfo": props.matchInfo, "serialNumber": response.data._doc.serialNumber, "category": props.category, "email": props.email, "phone": props.phone, "quantity": props.quantity, "name": props.name}});
+        console.log(response);
+      }
+      catch(e){
+        console.log(e.message);
+        alert("Payment failed. Please try again.")
+        window.location.reload();
+      }
+    }else{
+        alert("reCAPTCHA required")
+        e.preventDefault();
+    }
+      
+    
+
+
+    
+    // .then(navigate("/conformation", {state: {"matchInfo": props.matchInfo, "serialNumber": serialNumber, "category": props.category, "email": props.email, "phone": props.phone, "quantity": props.quantity, "name": props.name}}));
     
   }
+  const onCaptchaChange = (value) => {
+    // Send the reCAPTCHA response to the server for verification
+    // Replace YOUR_SERVER_URL with the URL of your server
+    console.log(value);
+        axios.post('http://localhost:4000/recaptcha', {
+            captcha: value
+        })
+        .then(function (response) {
+            console.log(response);
+            if (response.status === 200) {
+              window.recaptchaVerified = true;
+            } else { 
+              window.recaptchaVerified = false; 
+              alert("reCAPTCHA Failed");
+            }
+          })
+        .catch(function (error) {
+            console.log(error);
+        });
+    };
+
   console.log("card number: "+cardNumber);
   console.log("expire date: "+expirationDate);
   console.log("cvc: "+cvc);
@@ -106,10 +145,22 @@ export default function CheckoutForm(props) {
             cardNumberInputProps={{value: cardNumber, onChange: e => setCardNumber(e.target.value) }} 
             cardExpiryInputProps={{ value: expirationDate, onChange: e => setExpirationDate(e.target.value) }} 
             cardCVCInputProps={{ value: cvc, onChange: e => setCvc(e.target.value) }}
-            onError={({ inputName, err }) => {!err? setError(false) : setError(true)}}
             fieldClassName="input"
              />
-             <Recaptcha onSubmit={handleSubmit} isLoading={isLoading} />
+             {/* <Recaptcha /> */}
+             <div className="Recaptcha">
+          <form>
+            <div className="container">
+              <ReCAPTCHA sitekey="6LdqR8sjAAAAANtwa3p2UlDEYO7rRkH7WQDJkkkB" onChange={onCaptchaChange}/>
+              {/* <button id="login-button" type="submit" onClick={handleSubmit}>Login</button> */}
+              <button onClick={handleSubmit} className='checkout-btn' disabled={isLoading} id="submit">
+                <span id="button-text">
+                {isLoading ? <div className="spinner" id="spinner">Processing ...</div> : "Pay now"}
+                </span>
+            </button>
+            </div>
+          </form>
+        </div>
              
         {/* </div> */}
         {/* <div className='flex-container'>
@@ -126,7 +177,7 @@ export default function CheckoutForm(props) {
       </div>
       <div style={{display: "flex", justifyContent: "space-between"}}>
         <p style={{paddingTop: "10px"}}>Quantity {props.quantity}</p>
-        <p style={{paddingTop: "10px"}}>Price $123</p>
+        <p style={{paddingTop: "10px"}}>Price {getPrice(props.category)*props.quantity}</p>
       </div>
       {/* <button type='submit' className='checkout-btn' disabled={isLoading} id="submit">
         <span id="button-text">
