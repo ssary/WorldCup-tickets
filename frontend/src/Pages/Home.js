@@ -16,7 +16,7 @@ function Home() {
   const ShopURL = "https://world-cup-shop-microservice.vercel.app/api/matches"
     useEffect(()=>{
       if(round !== 0){
-        axios.post(`${ShopURL}/filterRound`, {round: round}).then(res => {
+        axios.get(`${ShopURL}/filterRound/${round}`).then(res => {
           setMatches(res.data);
           setInitialMatches(res.data);
         })

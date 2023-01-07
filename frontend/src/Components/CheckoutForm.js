@@ -88,7 +88,7 @@ export default function CheckoutForm(props) {
           phone: props.phone
       }
       try{
-        var response = await axios.post("http://localhost:4000/api/reservation", JSON.stringify(customerDetails), {headers: {'Content-Type': 'application/json'}})
+        var response = await axios.post("https://world-cup-reservation-microservice.vercel.app/api/reservation", JSON.stringify(customerDetails), {headers: {'Content-Type': 'application/json'}})
         navigate("/conformation", {state: {"matchInfo": props.matchInfo, "serialNumber": response.data._doc.serialNumber, "category": props.category, "email": props.email, "phone": props.phone, "quantity": props.quantity, "name": props.name}});
         console.log(response);
       }
@@ -114,7 +114,7 @@ export default function CheckoutForm(props) {
     // Send the reCAPTCHA response to the server for verification
     // Replace YOUR_SERVER_URL with the URL of your server
     console.log(value);
-        axios.post('http://localhost:4000/recaptcha', {
+        axios.post('https://world-cup-reservation-microservice.vercel.app/recaptcha', {
             captcha: value
         })
         .then(function (response) {
