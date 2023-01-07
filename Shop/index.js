@@ -12,4 +12,9 @@ const mongooseOptions = {
 const handleServerStartup = () => {
     app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
 }
-await mongoose.connect(process.env.CONNECTION_URL, mongooseOptions, handleServerStartup)
+
+mongoose.connect(process.env.CONNECTION_URL, mongooseOptions, handleServerStartup)
+// export function serverconnection(){ mongoose.connect(process.env.CONNECTION_URL, mongooseOptions)}
+// export function closeConnection(){mongoose.connection.close()}
+// serverconnection()
+// handleServerStartup()

@@ -15,7 +15,7 @@ const matchSchema = new Schema({
     max: 7
   },
   dateUtc: {
-    type: Date,
+    type: String,
     required: true
   },
   location: {
@@ -59,5 +59,5 @@ const matchSchema = new Schema({
 }
 
 );
-const Matches = mongoose.model('Matches', matchSchema, 'Shop');
+const Matches = mongoose.model('Matches', matchSchema, 'Matches');
 export default Matches;

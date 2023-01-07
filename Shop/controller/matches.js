@@ -11,13 +11,16 @@ export const getMatches = async (req, res) => {
 }
 export const getRound = async (req, res) => {
     try {
-        const {round} = req.body;
+        const {round} = req.params;
         if(round === 1){
             const records = await Matches.find({$or: [{roundNumber: 1 }, {roundNumber: 2 }, {roundNumber: 3 }]}).sort({matchNumber: 1});
             res.status(200).json(records);
-        }else{
+        }else if(round <= 7){
             const records = await Matches.find({roundNumber: round}).sort({matchNumber: 1});
             res.status(200).json(records);
+        }
+        else{
+            res.status(400).json({message: "Enter a valid round number (1 to 7)"})
         }
         
     } catch (e) {
@@ -29,7 +32,10 @@ export const getMatch = async (req, res) => {
     try {
         const matchNumber = req.params.matchNumber
         const Match = await Matches.findOne({ matchNumber: matchNumber })
-        res.status(200).json(Match)
+        if(!Match)
+            res.status(404).json({ message: "Match not found" })
+        else
+            res.status(200).json(Match)
     }
     catch (e) {
         res.status(400).json({ message: e.message });
@@ -46,17 +52,17 @@ export const addMatches = async (req, res) => {
             }, { new: true });
             res.status(200).json(updatedMatch)
         }
-        console.log(match)
+        else{
         const newMatch = new Matches(match);
         await newMatch.save();
         res.status(200).json(match);
-    }
+    }}
     catch (e) {
         res.status(400).json({ message: e.message })
     }
 }
 
-
+// deprecated
 export const updateMatch = async (req, res) => {
     const matchNumber = req.params.matchNumber
     try {
