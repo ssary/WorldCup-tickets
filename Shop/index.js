@@ -18,6 +18,8 @@ const rateLimiter = rateLimit({
 });
 app.use(helmet());
 
+app.use(cors());
+
 app.use(rateLimiter);
 
 app.use(easyWaf({
@@ -36,7 +38,6 @@ app.use(easyWaf({
 
 app.use(bodyParser.json({extended: true}));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
 
 app.use('/api/matches', router)
 

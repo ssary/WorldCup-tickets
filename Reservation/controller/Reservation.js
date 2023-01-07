@@ -18,12 +18,12 @@ const getReservationWithDegree = async (req, res) => {
     if (!req.params.MatchNumber) {
         return res.status(400).json({ message: 'Enter a MatchNumber please!' })
     }
-    if (!req.params.Degree) {
+    if (!req.params.Category) {
         return res.status(400).json({ message: 'Enter the desired degree (1, 2, 3) please!' })
     }
     try {
         const { MatchNumber, Category } = req.params
-        const ticket = Reservation.findOne({ 'MatchNumber': MatchNumber, 'Category': Category })
+        const ticket = await Reservation.findOne({ 'MatchNumber': MatchNumber, 'Category': Category })
         res.status(200).json(ticket)
     }
     catch (e) {
