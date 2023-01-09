@@ -478,3 +478,34 @@ hr{
 .textOpac{
     opacity: 0.5;
 }
+.findTicket-container{
+    font-family: 'Tajawal', sans-serif;
+}
+.findTicket-input{
+    display: flex;
+    justify-content: center;
+}
+.findTicket-singleInput{
+    margin: 0 20px;
+}
+.findTicket-singleInput label{
+    display: block;
+}
+.findTicket-singleInput input{
+    padding: 20px;
+    border: 1px solid #686868;
+    border-radius: 3px;
+}
+.ticket-header{
+    display: flex;
+    justify-content: center;
+}
+.ticket-container{
+    border: 1px solid;
+    width: 400px;
+    margin: auto;
+    margin-top: 30px;
+}
+.ticket-header p{
+    margin: 0 20px;
+}

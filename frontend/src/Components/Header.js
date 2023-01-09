@@ -16,6 +16,7 @@ function Header(){
         <Navbar className="nav2 my-nav" expand="sm">
             <Navbar.Brand className="brand" href="/">BSMSM_inc</Navbar.Brand>
             <Navbar.Brand style={analyticsBtn} className="analytics-nav" href="/Analytics">Analytics</Navbar.Brand>
+            <Navbar.Brand style={analyticsBtn} className="analytics-nav" href="/findticket">Find Tickets</Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
                 
