@@ -19,9 +19,6 @@ import { json } from 'body-parser';
 //     jest.clearAllMocks();
 //     jest.resetAllMocks();
 // });
-
-jest.setTimeout(20000);
-const SHOP_BASE_URL = 'http://localhost:5001/api/matches';
 // const matchStub = {
 //     matchNumber: 28,
 //     roundNumber: 2,
@@ -48,48 +45,30 @@ const SHOP_BASE_URL = 'http://localhost:5001/api/matches';
 //             price: 195}
 // }
 // };
-
+const SHOP_BASE_URL = 'https://world-cup-shop-microservice.vercel.app/api/matches';
 
 describe('GET /api/matches/:matchNumber', () => {
     it('should return 200 OK and the match with matchNumber', async () => {
-        /*const { response, statusCode } = await app.get(`/api/matches/28`);
-        expect(statusCode).toBe(200);
-        expect(response.matchNumber).toBe(matchStub.matchNumber);*/
-
-        /*
-         const matchNumber = req.params.matchNumber
-        const Match = await Matches.findOne({ matchNumber: matchNumber })
-        if(!Match)
-            res.status(404).json({ message: "Match not found" })
-        else
-            res.status(200).json(Match)
-        */
-
         let matchSample = await Matches.findOne({matchNumber: 28})
-        
-        matchSample.dateUtc = (matchSample.dateUtc).toString()
-        console.log(matchSample.dateUtc.toUTCString());
         return request(SHOP_BASE_URL).get('/28')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
-        .expect(function(res){
-            //expect(res.body.matchNumber).toBe(matchSample.matchNumber)
-            expect(res.body).toMatchObject(matchSample);
-        });
-        // .expect(function(res) {
-        //     expect(res.body.matchNumber).toEqual(matchStub.matchNumber);
-        //     expect(res.body.roundNumber).toEqual(matchStub.roundNumber);
-        //     expect(res.body.dateUtc).toEqual(matchStub.dateUtc);
-        //     expect(res.body.location).toEqual(matchStub.location);
-        //     expect(res.body.homeTeam).toEqual(matchStub.homeTeam);
-        //     expect(res.body.awayTeam).toEqual(matchStub.awayTeam);
-        //     expect(res.body.homeTeamScore).toEqual(matchStub.homeTeamScore);
-        //     expect(res.body.awayTeamScore).toEqual(matchStub.awayTeamScore);
-        //     expect(res.body.availability.category1).toEqual(matchStub.availability.category1);
-        //     expect(res.body.availability.category2).toEqual(matchStub.availability.category2);
-        //     expect(res.body.availability.category3).toEqual(matchStub.availability.category3);
+        // .expect(function(res){
+        //     expect(res.body).toMatchObject(matchSample);
         // });
+        .expect(function(res) {
+            expect(res.body.matchNumber).toEqual(matchSample.matchNumber);
+            expect(res.body.roundNumber).toEqual(matchSample.roundNumber);
+            expect(res.body.location).toEqual(matchSample.location);
+            expect(res.body.homeTeam).toEqual(matchSample.homeTeam);
+            expect(res.body.awayTeam).toEqual(matchSample.awayTeam);
+            expect(res.body.homeTeamScore).toEqual(matchSample.homeTeamScore);
+            expect(res.body.awayTeamScore).toEqual(matchSample.awayTeamScore);
+            expect(res.body.availability.category1).toEqual(matchSample.availability.category1);
+            expect(res.body.availability.category2).toEqual(matchSample.availability.category2);
+            expect(res.body.availability.category3).toEqual(matchSample.availability.category3);
+        });
     });
 
     it('should return 404 Not Found if matchNumber does not exist', async () => {
@@ -241,7 +220,18 @@ const filterRoundStub = [
     }
 ]
 
+/*
+describe('GET /api/matches/filterRound', () => {
+    it('Should get matches by round', () => {
+      request(app)
+        .get(/api/matches/filterRound/${1})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, filterRoundStub)
+    });
+});
 
+*/
 describe('Filter the matches on roundNumber', () => {
     describe('given a valid roundNumber', ()=>{
         it('Should return all matches in the given round', () => {
@@ -308,7 +298,7 @@ const newMatchStub =
                 "price": 195
             }
         },
-        "matchNumber": 70,
+        "matchNumber": 73,
         "roundNumber": 2,
         "dateUtc": "2022-11-27T19:00:00.000Z",
         "location": "Al Bayt Stadium",
@@ -318,13 +308,15 @@ const newMatchStub =
         "awayTeamScore": 0
     }
 
-describe.only('Adding new Match to the shop database', ()=>{
+describe('Adding new Match to the shop database', ()=>{
     describe('given a new match that doesn\'t exist in the DB', ()=>{
     it('should add a match given the right parameters',async ()=>{
         let newMatch = new Matches(newMatchStub)
+        
         await newMatch.save();
+        
         const matchNumber = newMatch.matchNumber
-        console.log(newMatch);
+        
         return request(SHOP_BASE_URL)
         .get(`/${matchNumber}`)
         .set('Accept', 'application/json')
@@ -350,3 +342,48 @@ describe.only('Adding new Match to the shop database', ()=>{
     })
     
 })
+const ticketpayload = {matchNumber:43,category:2,quantity:2,action:"TICKET_PENDING"}
+const newTicketstub={
+    "availability": {
+        "category1": {
+            "available": 18,
+            "pending": 0,
+            "price": 75
+        },
+        "category2": {
+            "available": 20,
+            "pending": 2,
+            "price": 125
+        },
+        "category3": {
+            "available": 20,
+            "pending": 0,
+            "price": 195
+        }
+    },
+    "_id": "63b9494b578df497292b61c8",
+    "matchNumber": 43,
+    "roundNumber": 3,
+    "dateUtc": "2022-12-01T19:00:00.000Z",
+    "location": "Khalifa International Stadium",
+    "homeTeam": "Japan",
+    "awayTeam": "Spain",
+    "homeTeamScore": 0,
+    "awayTeamScore": 0,
+    "__v": 0
+};
+describe('updating Match to the shop database', ()=>{
+    describe('given a new event the in tickets on shop consumer', ()=>{
+    it('change the availability depending on action',async ()=>{
+        return request(SHOP_BASE_URL)
+        .patch()
+        .send(ticketpayload)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .expect(function(res){
+            expect(res.body).toMatchObject(newTicketstub);
+        });
+    })
+});
+});
