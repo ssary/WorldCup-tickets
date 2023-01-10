@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import { ReactDOM } from "react";
 import Payment from "./Pages/Payment";
 import Conformation from "./Pages/Conformation";
+import FindTicket from "./Pages/FindTicket";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/conformation" element={<Conformation />} />
         <Route path="/Analytics" element={<Analytics/>}/>
+        <Route path="/findticket" element={<FindTicket/>}/>
       </Routes>
     </div>
   );
