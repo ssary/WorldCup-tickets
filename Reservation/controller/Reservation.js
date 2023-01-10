@@ -65,6 +65,31 @@ const DeleteTicket = async (req, res) => {
 
     }
 }
+
+const getReservationSSID = async (req,res)=>{
+    try {
+        const {ssid} = req.params
+        const reservation = await Reservation.find({ serialNumber: ssid })
+        res.status(200).json(reservation)
+    }
+    catch (e) {
+        res.status(400).json({ message: e.message });
+    }
+
+
+}
+const getReservationEmail = async (req,res)=>{
+    try {
+        const {email} = req.params
+        const reservation = await Reservation.find({ "Buyer.Email" : email })
+        res.status(200).json(reservation)
+    }
+    catch (e) {
+        res.status(400).json({ message: e.message });
+    }
+
+
+}
 const buyTicket = async (req, res) => {
     try {
         var reservation = req.body.reservation
@@ -151,4 +176,4 @@ const buyTicket = async (req, res) => {
 }
 
 
-module.exports = { UpdateTicket, getReservations, getAllReservations, buyTicket, getReservationWithDegree };
+module.exports = { UpdateTicket, getReservations, getAllReservations, buyTicket, getReservationWithDegree,getReservationEmail,getReservationSSID };
