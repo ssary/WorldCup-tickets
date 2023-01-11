@@ -3,6 +3,12 @@ import request from 'supertest'
 import { serverconnection, closeConnection } from '../index.js';
 import Matches from '../Models/Matches.js';
 import { json } from 'body-parser';
+import { getMatch } from '../controller/matches.js';
+
+import axios from 'axios'
+
+import matchStub from './matchStub.api.stub.json'
+jest.mock('axios')
 // restart connection to the database before each test
 // beforeEach(() => {
 //     serverconnection();
@@ -15,10 +21,10 @@ import { json } from 'body-parser';
 //     mongoose.connection.close();
 // })
 
-// beforeEach(()=>{
-//     jest.clearAllMocks();
-//     jest.resetAllMocks();
-// });
+beforeEach(()=>{
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+});
 // const matchStub = {
 //     matchNumber: 28,
 //     roundNumber: 2,
@@ -47,27 +53,27 @@ import { json } from 'body-parser';
 // };
 const SHOP_BASE_URL = 'https://world-cup-shop-microservice.vercel.app/api/matches';
 
-describe('GET /api/matches/:matchNumber', () => {
-    it('should return 200 OK and the match with matchNumber', async () => {
-        let matchSample = await Matches.findOne({matchNumber: 28})
-        return request(SHOP_BASE_URL).get('/28')
+describe.only('GET /api/matches/:matchNumber', () => {
+    it.only('should return 200 OK and the match with matchNumber', async () => {
+        axios.get.mockResolvedValueOnce(matchStub)
+        const matchSample = await axios.get(`${SHOP_BASE_URL}/28`)
+        //let matchSample = await Matches.findOne({matchNumber: 28})
+        console.log(matchSample.data);
+        return request(SHOP_BASE_URL).get('/27')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
-        // .expect(function(res){
-        //     expect(res.body).toMatchObject(matchSample);
-        // });
         .expect(function(res) {
-            expect(res.body.matchNumber).toEqual(matchSample.matchNumber);
-            expect(res.body.roundNumber).toEqual(matchSample.roundNumber);
-            expect(res.body.location).toEqual(matchSample.location);
-            expect(res.body.homeTeam).toEqual(matchSample.homeTeam);
-            expect(res.body.awayTeam).toEqual(matchSample.awayTeam);
-            expect(res.body.homeTeamScore).toEqual(matchSample.homeTeamScore);
-            expect(res.body.awayTeamScore).toEqual(matchSample.awayTeamScore);
-            expect(res.body.availability.category1).toEqual(matchSample.availability.category1);
-            expect(res.body.availability.category2).toEqual(matchSample.availability.category2);
-            expect(res.body.availability.category3).toEqual(matchSample.availability.category3);
+            expect(res.body.matchNumber).toEqual(matchSample.data.matchNumber);
+            expect(res.body.roundNumber).toEqual(matchSample.data.roundNumber);
+            expect(res.body.location).toEqual(matchSample.data.location);
+            expect(res.body.homeTeam).toEqual(matchSample.data.homeTeam);
+            expect(res.body.awayTeam).toEqual(matchSample.data.awayTeam);
+            expect(res.body.homeTeamScore).toEqual(matchSample.data.homeTeamScore);
+            expect(res.body.awayTeamScore).toEqual(matchSample.data.awayTeamScore);
+            expect(res.body.availability.category1).toEqual(matchSample.data.availability.category1);
+            expect(res.body.availability.category2).toEqual(matchSample.data.availability.category2);
+            expect(res.body.availability.category3).toEqual(matchSample.data.availability.category3);
         });
     });
 

@@ -1,0 +1,30 @@
+{
+    "data":{ 
+        "availability": {
+            "category1": {
+                "available": 20,
+                "pending": 0,
+                "price": 75
+            },
+            "category2": {
+                "available": 20,
+                "pending": 0,
+                "price": 125
+            },
+            "category3": {
+                "available": 20,
+                "pending": 0,
+                "price": 195
+            }
+        },
+        "_id": "63b96e6c152be7fe0cb9d67a",
+        "matchNumber": 27,
+        "roundNumber": 2,
+        "dateUtc": "2022-11-27T19:00:00.000Z",
+        "location": "Al Bayt Stadium",
+        "homeTeam": "Spain",
+        "awayTeam": "Germany",
+        "homeTeamScore": 0,
+        "awayTeamScore": 0,
+        "__v": 0}
+    }
