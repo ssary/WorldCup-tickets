@@ -69,7 +69,7 @@ const DeleteTicket = async (req, res) => {
 const getReservationSSID = async (req,res)=>{
     try {
         const {ssid} = req.params
-        const reservation = await Reservation.find({ serialNumber: ssid })
+        const reservation = await Reservation.findOne({ serialNumber: ssid })
         res.status(200).json(reservation)
     }
     catch (e) {
@@ -81,7 +81,7 @@ const getReservationSSID = async (req,res)=>{
 const getReservationEmail = async (req,res)=>{
     try {
         const {email} = req.params
-        const reservation = await Reservation.find({ "Buyer.Email" : email })
+        const reservation = await Reservation.findOne({ "Buyer.Email" : email })
         res.status(200).json(reservation)
     }
     catch (e) {
