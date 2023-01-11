@@ -26,7 +26,7 @@ function FindTicket() {
 
         if (e.target.name === "emailForm") {
 
-            var reservation = await axios.get(`http://localhost:4000/api/reservation/email/${email}`)
+            var reservation = await axios.get(`https://world-cup-reservation-microservice.vercel.app/api/reservation/email/${email}`)
             setTickets(reservation.data);
 
             var info = await axios.get(`https://world-cup-shop-microservice.vercel.app/api/matches/${reservation.data.MatchNumber}`)
@@ -34,7 +34,7 @@ function FindTicket() {
             setShow(true)
         }
         if (e.target.name === "idForm") {
-            var reservation = await axios.get(`http://localhost:4000/api/reservation/ssid/${ticketID}`)
+            var reservation = await axios.get(`https://world-cup-reservation-microservice.vercel.app/api/reservation/ssid/${ticketID}`)
             setTickets(reservation.data);
 
             var info = await axios.get(`https://world-cup-shop-microservice.vercel.app/api/matches/${reservation.data.MatchNumber}`)
@@ -46,8 +46,6 @@ function FindTicket() {
 
 
     }
-    console.log(match)
-    console.log(tickets)
     return (
         <div>
             <Header />
