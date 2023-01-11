@@ -6,8 +6,10 @@ import { json } from 'body-parser';
 import mongoose from 'mongoose';
 import {Mockgoose}  from 'mockgoose';
 import { matchStub,matchesStub,filterRoundStub, newMatchStub, newTicketstub } from './stubs.js';
+
 const mockgoose = new Mockgoose(mongoose);
 
+jest.mock("axios");
 // restart connection to the database before each test
 // beforeEach(() => {
 //     serverconnection();
@@ -25,10 +27,10 @@ const mockgoose = new Mockgoose(mongoose);
 //     jest.resetAllMocks();
 // });
 // 
-/*
+
 beforeAll(async () => {
     await mockgoose.prepareStorage();
-    await mongoose.connect(process.env.CONNECTION_URL, {
+    await mongoose.connect('mongodb+srv://Omar:3ksvF6Q1PHnhMWl8@fifa22bsmsm.ksqge0f.mongodb.net/WorldCup22?retryWrites=true&w=majority', {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
@@ -37,7 +39,8 @@ beforeAll(async () => {
   afterAll(async () => {
     await mongoose.disconnect();
     await mockgoose.mongodHelper.mongoBin.childProcess.kill();
-  });*/
+  });
+
 const SHOP_BASE_URL = 'https://world-cup-shop-microservice.vercel.app/api/matches';
 
 describe('GET /api/matches/:matchNumber', () => {
