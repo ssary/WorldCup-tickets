@@ -14,22 +14,6 @@ const getAllReservations = async (req, res) => {
         res.status(400).json({ message: e.message });
     }
 }
-const getReservationWithDegree = async (req, res) => {
-    if (!req.params.MatchNumber) {
-        return res.status(400).json({ message: 'Enter a MatchNumber please!' })
-    }
-    if (!req.params.Category) {
-        return res.status(400).json({ message: 'Enter the desired degree (1, 2, 3) please!' })
-    }
-    try {
-        const { MatchNumber, Category } = req.params
-        const ticket = await Reservation.findOne({ 'MatchNumber': MatchNumber, 'Category': Category })
-        res.status(200).json(ticket)
-    }
-    catch (e) {
-        res.status(404).json({ message: e.message })
-    }
-}
 const getReservations = async (req, res) => {
 
     try {
@@ -39,30 +23,6 @@ const getReservations = async (req, res) => {
     }
     catch (e) {
         res.status(400).json({ message: e.message });
-    }
-}
-const UpdateTicket = async (req, res) => {
-    let { serialNumber } = req.body;
-
-    try {
-        var update = await Reservation.findOneAndUpdate({ serialNumber: serialNumber }, { $set: req.body }, { new: true });
-        res.status(200).json(update)
-    }
-    catch (e) {
-        res.status(400).json({ message: e.message });
-
-    }
-}
-const DeleteTicket = async (req, res) => {
-    let { serialNumber } = req.body;
-
-    try {
-        var reservation = await Reservation.findOneAndDelete({ serialNumber: serialNumber });
-        res.status(200).json(reservation);
-    }
-    catch (e) {
-        res.status(400).json({ message: e.message });
-
     }
 }
 const getReservationSSID = async (req,res)=>{
@@ -176,4 +136,4 @@ const buyTicket = async (req, res) => {
 }
 
 
-module.exports = { UpdateTicket, getReservations, getAllReservations, buyTicket, getReservationWithDegree ,getReservationEmail,getReservationSSID};
+module.exports = { getReservations, getAllReservations, buyTicket ,getReservationEmail,getReservationSSID};

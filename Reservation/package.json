@@ -5,7 +5,7 @@
     "start": "node index.js",
     "app": "nodemon index.js",
     "start-dev": "nodemon ./index.js",
-    "test": "jest --config jest.config.cjs"
+    "test": "jest --config jest.config.cjs --coverage"
   },
   "dependencies": {
     "@hapi/joi": "17.1.1",

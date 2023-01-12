@@ -30,7 +30,7 @@ app.use(helmet());
 
 app.use(rateLimiter);
 
-
+app.listen(5001, () => console.log(`Server listening on port 5001`))
 app.use(bodyParser.json({extended: true}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());

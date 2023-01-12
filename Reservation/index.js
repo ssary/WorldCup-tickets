@@ -17,6 +17,7 @@ const rateLimiter = rateLimit({
     legacyHeaders: false,
 });
 const app = express();
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
 
 app.use(helmet());
 
@@ -34,11 +35,11 @@ const mongooseOptions = {
 }
 
 const handleServerStartup = () => {
-    app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
+     app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
 }
 async function main() {
     await mongoose.set('strictQuery', true)
-    await mongoose.connect(process.env.CONNECTION_URL, mongooseOptions, handleServerStartup)
+    await mongoose.connect(process.env.CONNECTION_URL, mongooseOptions)
     await startKafkaProducer();
     }
 

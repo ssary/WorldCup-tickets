@@ -1,5 +1,5 @@
 const express = require ('express')
-const {UpdateTicket, getReservations, getAllReservations, buyTicket,getReservationEmail,getReservationSSID} =require( "../controller/Reservation.js")
+const {getReservations, getAllReservations, buyTicket,getReservationEmail,getReservationSSID} =require( "../controller/Reservation.js")
 
 const router = express.Router();
 

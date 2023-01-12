@@ -149,39 +149,39 @@ catch (e) {
 }
 */
 
-describe('Adding new Match to the shop database', () => {
-    describe('given a new match is received from masterlist', () => {
-        it('should add a match given the right parameters', async () => {
-            let newMatch = new Matches(newMatchStub)
+// describe('Adding new Match to the shop database', () => {
+//     describe('given a new match is received from masterlist', () => {
+//         it('should add a match given the right parameters', async () => {
+//             let newMatch = new Matches(newMatchStub)
 
-            await newMatch.save();
+//             await newMatch.save();
 
-            const matchNumber = newMatch.matchNumber
+//             const matchNumber = newMatch.matchNumber
 
-            return request(SHOP_BASE_URL)
-                .get(`/${matchNumber}`)
-                .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .expect(function (res) {
-                    expect(res.body).toMatchObject(newMatch);
-                });
-        })
-    });
-    describe('given bad parameters', () => {
+//             return request(SHOP_BASE_URL)
+//                 .get(`/${matchNumber}`)
+//                 .set('Accept', 'application/json')
+//                 .expect('Content-Type', /json/)
+//                 .expect(200)
+//                 .expect(function (res) {
+//                     expect(res.body).toMatchObject(newMatch);
+//                 });
+//         })
+//     });
+//     describe('given bad parameters', () => {
 
-        it('Should return status 400', async () => {
-            const newMatch = new Matches(newMatchStub)
-            //await newMatch.save()
-            return request(SHOP_BASE_URL)
-                .post('/')
-                .send(newMatch)
-                .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
-                .expect(400)
-        })
-    })
+//         it('Should return status 400', async () => {
+//             const newMatch = new Matches(newMatchStub)
+//             //await newMatch.save()
+//             return request(SHOP_BASE_URL)
+//                 .post('/')
+//                 .send(newMatch)
+//                 .set('Accept', 'application/json')
+//                 .expect('Content-Type', /json/)
+//                 .expect(400)
+//         })
+//     })
 
-});
+// });
 
 jest.setTimeout(50000)

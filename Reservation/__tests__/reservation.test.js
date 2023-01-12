@@ -94,10 +94,16 @@ describe("GET api/reservation/email/:email", () => {
             .expect(null);
     });
 });
+
 describe("POST api/reservation/", () => {
     it("Should return a new reservations with status code 200", async () => {
-        //axios.post.mockResolvedValueOnce(mockConfirmation)
-        axios.post.mockImplementationOnce(() => Promise.resolve(mockConfirmation));
+        axios.post.mockResolvedValueOnce(mockConfirmation)
+        //axios.post.mockImplementationOnce(() => Promise.resolve(mockConfirmation));
+       /* jest.mock('axios', () => {
+            return {
+              post: jest.fn(() => Promise.resolve({mockConfirmation })),
+            };
+          })*/
         const response = await axios.post(`${RESERVATION_BASE_URL}/`, {
             "email": "desoukya@gmail.com",
             "matchNumber": 1,
@@ -113,9 +119,8 @@ describe("POST api/reservation/", () => {
                 "cvc": "123"
             }
         });
-
         expect(axios.post).toHaveBeenCalledTimes(1)
-        expect(response.body).toEqual(mockConfirmation.data);
+        expect(response.data).toEqual(mockConfirmation.data);
     })
 });
 
