@@ -98,12 +98,6 @@ describe("GET api/reservation/email/:email", () => {
 describe("POST api/reservation/", () => {
     it("Should return a new reservations with status code 200", async () => {
         axios.post.mockResolvedValueOnce(mockConfirmation)
-        //axios.post.mockImplementationOnce(() => Promise.resolve(mockConfirmation));
-       /* jest.mock('axios', () => {
-            return {
-              post: jest.fn(() => Promise.resolve({mockConfirmation })),
-            };
-          })*/
         const response = await axios.post(`${RESERVATION_BASE_URL}/`, {
             "email": "desoukya@gmail.com",
             "matchNumber": 1,
