@@ -1,0 +1,120 @@
+{
+ "data":[
+    {
+        "availability": {
+            "category1": {
+                "available": 20,
+                "pending": 0,
+                "price": 75
+            },
+            "category2": {
+                "available": 20,
+                "pending": 0,
+                "price": 125
+            },
+            "category3": {
+                "available": 20,
+                "pending": 0,
+                "price": 195
+            }
+        },
+        "_id": "63b96e6c152be7fe0cb9d698",
+        "matchNumber": 57,
+        "roundNumber": 5,
+        "dateUtc": "2022-12-09T19:00:00.000Z",
+        "location": "TBA",
+        "homeTeam": "TBA",
+        "awayTeam": "TBA",
+        "homeTeamScore": 0,
+        "awayTeamScore": 0,
+        "__v": 0
+    },
+    {
+        "availability": {
+            "category1": {
+                "available": 20,
+                "pending": 0,
+                "price": 75
+            },
+            "category2": {
+                "available": 20,
+                "pending": 0,
+                "price": 125
+            },
+            "category3": {
+                "available": 20,
+                "pending": 0,
+                "price": 195
+            }
+        },
+        "_id": "63b96e6c152be7fe0cb9d697",
+        "matchNumber": 58,
+        "roundNumber": 5,
+        "dateUtc": "2022-12-09T15:00:00.000Z",
+        "location": "TBA",
+        "homeTeam": "TBA",
+        "awayTeam": "TBA",
+        "homeTeamScore": 0,
+        "awayTeamScore": 0,
+        "__v": 0
+    },
+    {
+        "availability": {
+            "category1": {
+                "available": 20,
+                "pending": 0,
+                "price": 75
+            },
+            "category2": {
+                "available": 20,
+                "pending": 0,
+                "price": 125
+            },
+            "category3": {
+                "available": 20,
+                "pending": 0,
+                "price": 195
+            }
+        },
+        "_id": "63b96e6c152be7fe0cb9d69a",
+        "matchNumber": 59,
+        "roundNumber": 5,
+        "dateUtc": "2022-12-10T19:00:00.000Z",
+        "location": "TBA",
+        "homeTeam": "TBA",
+        "awayTeam": "TBA",
+        "homeTeamScore": 0,
+        "awayTeamScore": 0,
+        "__v": 0
+    },
+    {
+        "availability": {
+            "category1": {
+                "available": 20,
+                "pending": 0,
+                "price": 75
+            },
+            "category2": {
+                "available": 20,
+                "pending": 0,
+                "price": 125
+            },
+            "category3": {
+                "available": 20,
+                "pending": 0,
+                "price": 195
+            }
+        },
+        "_id": "63b96e6c152be7fe0cb9d699",
+        "matchNumber": 60,
+        "roundNumber": 5,
+        "dateUtc": "2022-12-10T15:00:00.000Z",
+        "location": "TBA",
+        "homeTeam": "TBA",
+        "awayTeam": "TBA",
+        "homeTeamScore": 0,
+        "awayTeamScore": 0,
+        "__v": 0
+    }
+]   
+}

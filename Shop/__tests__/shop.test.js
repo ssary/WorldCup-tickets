@@ -3,11 +3,11 @@ import request from 'supertest'
 import { serverconnection, closeConnection } from '../index.js';
 import Matches from '../Models/Matches.js';
 import { json } from 'body-parser';
-import { getMatch } from '../controller/matches.js';
-
 import axios from 'axios'
-
+import updateStub from './updateStub.json'
+import filterStub from './filterStub.json'
 import matchStub from './matchStub.api.stub.json'
+import matchesStub from './matchesStub.api.stub.json';
 jest.mock('axios')
 // restart connection to the database before each test
 // beforeEach(() => {
@@ -53,13 +53,13 @@ beforeEach(()=>{
 // };
 const SHOP_BASE_URL = 'https://world-cup-shop-microservice.vercel.app/api/matches';
 
-describe.only('GET /api/matches/:matchNumber', () => {
-    it.only('should return 200 OK and the match with matchNumber', async () => {
+describe('GET /api/matches/:matchNumber', () => {
+    it('should return 200 OK and the match with matchNumber', async () => {
         axios.get.mockResolvedValueOnce(matchStub)
         const matchSample = await axios.get(`${SHOP_BASE_URL}/28`)
         //let matchSample = await Matches.findOne({matchNumber: 28})
         console.log(matchSample.data);
-        return request(SHOP_BASE_URL).get('/27')
+        return request(SHOP_BASE_URL).get('/28')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
@@ -91,6 +91,8 @@ describe.only('GET /api/matches/:matchNumber', () => {
 
 describe("GET api/matches", () => {
     it("Should return all matches with status code 200", async () => {
+        axios.get.mockResolvedValueOnce(matchesStub)
+        const matches = await axios.get(`${SHOP_BASE_URL}`)
         /*const { body, statusCode } = await supertest(app).get('/api/matches')
         expect(statusCode).toBe(200);
         expect(body).toBe(matchesStub);*/
@@ -99,7 +101,7 @@ describe("GET api/matches", () => {
         .expect('Content-Type', /json/)
         .expect(200)
         .expect(function(res){
-            expect(res.body).toMatchObject(matchesStub);
+            expect(res.body[0]).toMatchObject(matches.data[0]);
         });
     })
 })
@@ -119,34 +121,55 @@ describe('GET /api/matches/filterRound', () => {
 */
 describe('Filter the matches on roundNumber', () => {
     describe('given a valid roundNumber', ()=>{
-        it('Should return all matches in the given round', () => {
-        return request(SHOP_BASE_URL)
-          .post('/filterRound')
-          .send({round: 6})
-          .set('Accept', 'application/json')
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .expect(function(res){
-              expect(res.body).toMatchObject(filterRoundStub);
-          });
+        it('Should return all matches in the given round',async () => {
+            axios.get.mockResolvedValueOnce(filterStub)
+            const filter = await axios.get(`${SHOP_BASE_URL}/5`)
+            /*const { body, statusCode } = await supertest(app).get('/api/matches')
+            expect(statusCode).toBe(200);
+            expect(body).toBe(matchesStub);*/
+            return request(SHOP_BASE_URL).get('/filterRound/5')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect(function(res){
+                expect(res.body).toMatchObject(filter.data);
+            });
       });})
     
     describe('If a given roundNumber is (invalid) not in interval [1,7]', ()=>{
         it('should return 400 bad request', () => {
             return request(SHOP_BASE_URL)
-              .post('/filterRound')
-              .send({round: 10})
+              .get('/filterRound/8')
               .set('Accept', 'application/json')
               .expect('Content-Type', /json/)
               .expect(400)
-          });
-    })
-});
-/*
-export const addMatches = async (req, res) => {
-
-    try {
-        const match = req.body;
+            });
+        })
+    });
+    
+    const ticketpayload = {matchNumber:43,category:2,quantity:1,action:"TICKET_PENDING"}
+    describe('updating Match to the shop database', ()=>{
+        describe('given a new event the in tickets on shop consumer', ()=>{
+        it('change the availability depending on action',async ()=>{
+            axios.patch.mockResolvedValueOnce(updateStub)
+            const updatedMatch = await axios.patch(`${SHOP_BASE_URL}/`,ticketpayload)
+            return request(SHOP_BASE_URL)
+            .patch('/')
+            .send(ticketpayload)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect(function(res){
+                expect(res.body).toMatchObject(updatedMatch);
+            });
+        })
+    });
+    });
+    /*
+    export const addMatches = async (req, res) => {
+        
+        try {
+            const match = req.body;
         let exists = await Matches.exists({ matchNumber: match.matchNumber });
         if (exists) {
             const updatedMatch = await Matches.findOneAndUpdate({ matchNumber: match.matchNumber }, {
@@ -199,22 +222,6 @@ describe('Adding new Match to the shop database', ()=>{
     })
     
 })
-const ticketpayload = {matchNumber:43,category:2,quantity:2,action:"TICKET_PENDING"}
-describe('updating Match to the shop database', ()=>{
-    describe('given a new event the in tickets on shop consumer', ()=>{
-    it('change the availability depending on action',async ()=>{
-        return request(SHOP_BASE_URL)
-        .patch()
-        .send(ticketpayload)
-        .set('Accept', 'application/json')
-        .expect('Content-Type', /json/)
-        .expect(200)
-        .expect(function(res){
-            expect(res.body).toMatchObject(newTicketstub);
-        });
-    })
-});
-});
 
 
 

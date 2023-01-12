@@ -1,0 +1,29 @@
+{
+    "availability": {
+        "category1": {
+            "available": 20,
+            "pending": 0,
+            "price": 75
+        },
+        "category2": {
+            "available": 20,
+            "pending": 3,
+            "price": 125
+        },
+        "category3": {
+            "available": 20,
+            "pending": 0,
+            "price": 195
+        }
+    },
+    "_id": "63b96e6c152be7fe0cb9d689",
+    "matchNumber": 43,
+    "roundNumber": 3,
+    "dateUtc": "2022-12-01T19:00:00.000Z",
+    "location": "Khalifa International Stadium",
+    "homeTeam": "Japan",
+    "awayTeam": "Spain",
+    "homeTeamScore": 0,
+    "awayTeamScore": 0,
+    "__v": 0
+}
