@@ -146,7 +146,7 @@ describe('Filter the matches on roundNumber', () => {
             });
         })
     });
-    
+
     const ticketpayload = {matchNumber:43,category:2,quantity:1,action:"TICKET_PENDING"}
     describe('updating Match to the shop database', ()=>{
         describe('given a new event the in tickets on shop consumer', ()=>{
@@ -206,7 +206,7 @@ describe('Adding new Match to the shop database', ()=>{
             expect(res.body).toMatchObject(newMatch);
         });
     })
-})
+});
     describe('given bad parameters', () => {
         
         it('Should return status 400', async()=>{
@@ -221,19 +221,4 @@ describe('Adding new Match to the shop database', ()=>{
       })
     })
     
-})
-
-
-
-
-
-describe('POST /users', () => {
-  it('should create a new user', async () => {
-    const response = await request(app)
-      .post('/users')
-      .send({ name: 'Foo' });
-
-    expect(response.statusCode).toBe(201);
-    expect(response.body).toEqual({ id: expect.any(String), name: 'Foo' });
-  });
 });
