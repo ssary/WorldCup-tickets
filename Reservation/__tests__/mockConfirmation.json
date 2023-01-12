@@ -1,0 +1,62 @@
+{
+    "data":{
+        "message": "Ticket Purchase Successful",
+        "$__": {
+            "activePaths": {
+                "paths": {
+                    "serialNumber": "modify",
+                    "_id": "default",
+                    "Category": "modify",
+                    "price": "modify",
+                    "Buyer": "modify",
+                    "MatchNumber": "modify",
+                    "quantity": "modify"
+                },
+                "states": {
+                    "require": {},
+                    "default": {
+                        "_id": true
+                    },
+                    "modify": {
+                        "serialNumber": true,
+                        "Category": true,
+                        "price": true,
+                        "Buyer": true,
+                        "MatchNumber": true,
+                        "quantity": true
+                    }
+                }
+            },
+            "op": "validate",
+            "saving": {},
+            "$versionError": {
+                "version": 0,
+                "modifiedPaths": [
+                    "serialNumber",
+                    "Category",
+                    "price",
+                    "Buyer",
+                    "MatchNumber",
+                    "quantity"
+                ]
+            },
+            "saveOptions": {},
+            "validating": {}
+        },
+        "_doc": {
+            "serialNumber": "01efc332-b8f0-4afd-8aad-2d11b8769bae",
+            "Category": 1,
+            "price": 75,
+            "Buyer": {
+                "Name": "Amr Desouky",
+                "Email": "desoukya@gmail.com",
+                "Country": "United States",
+                "_id": "63c013a849206ab3de8e0df1",
+                "Phone": "+201111424148"
+            },
+            "MatchNumber": 1,
+            "quantity": 2,
+            "_id": "63c013a849206ab3de8e0df0"
+        }
+    }
+}

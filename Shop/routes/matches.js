@@ -7,6 +7,5 @@ router.get('/',getMatches)
 router.get('/:matchNumber',getMatch)
 router.get('/filterRound/:round',getRound)
 router.post('/',addMatches)
-router.put('/update/:matchNumber',updateMatch)
 router.patch('/',UpdateMatchTickets)
 export default router;

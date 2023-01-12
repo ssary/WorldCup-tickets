@@ -1,0 +1,21 @@
+{
+   "data": {
+        "_id": "63bf2a9ae0a2da7a6d132115",
+        "serialNumber": "0179acdf-6c5b-4ebc-86b7-41bf0985a6d3",
+        "Category": 1,
+        "price": 75,
+        "Buyer": {
+            "Name": "omar mohamed",
+            "Email": "mario@gmail.com",
+            "Country": "United States",
+            "_id": "63bf2a9ae0a2da7a6d132116",
+            "Phone": "+201111924215",
+            "nationalFormat": "0111 192 4215",
+            "internationalFormat": "+20 111 192 4215",
+            "countryCode": "EG"
+        },
+        "MatchNumber": 5,
+        "quantity": 2,
+        "__v": 0
+    }
+}

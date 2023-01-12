@@ -22,28 +22,9 @@ app.use(helmet());
 
 app.use(rateLimiter);
 
-app.use(easyWaf({
-    dryMode: true, //Suspicious requests are only logged and not blocked
-    allowedHTTPMethods: ['GET', 'POST'],
-    ipBlacklist: ['1.1.1.1', '2.2.2.2'],
-    ipWhitelist: ['::1', '172.16.0.0/12'],
-    queryUrlWhitelist: ['github.com'],
-    modules: {
-        directoryTraversal: {
-            enabled: true,
-            excludePaths: /^\/exclude\/$/i
-        },
-    }
-}));
-
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/reservation', router)
-app.get('/country', async (req,res)=>{
-    var info = await axios.get("http://ip-api.com/json")
-    info = JSON.stringify(info.data.country)
-    res.status(200).send(info)
-})
 
 const PORT = process.env.PORT || 5001;
 
@@ -59,8 +40,6 @@ async function main() {
     await mongoose.set('strictQuery', true)
     await mongoose.connect(process.env.CONNECTION_URL, mongooseOptions, handleServerStartup)
     await startKafkaProducer();
-    var info = await axios.get("http://ip-api.com/json")
-    console.log(info.data.country)
     }
 
 module.exports = app;    
