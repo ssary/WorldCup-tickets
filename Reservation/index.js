@@ -1,29 +1,89 @@
-import express from "express";
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import router from './routes/tickets.js'
-import generateDummyTickets from "./utils/utils.js";
+const express = require('express')
+const cors = require('cors')
+const bodyParser = require('body-parser');
+const axios = require("axios");
+const mongoose = require("mongoose");
+const router = require("./routes/Reservation");
+const { startKafkaProducer } = require('./connectors/kafka');
+require('dotenv').config();
+const easyWaf = require('easy-waf');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const {stringify} = require('querystring');
 
+const rateLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 24 hrs in milliseconds
+    max: 1000,
+    message: 'You have exceeded the 1000 requests in 1 hrs limit!',
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 const app = express();
-dotenv.config({path:'../.env'});
-mongoose.set('strictQuery', true)
 
-app.use(bodyParser.json({extended: true}));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(helmet());
 app.use(cors());
+app.use(rateLimiter);
 
-app.use('/reservation', router)
+app.use(easyWaf({
+    dryMode: false, //Suspicious requests are only logged and not blocked
+    allowedHTTPMethods: ['GET', 'POST','PUT','PATCH'],
+    ipBlacklist: ['1.1.1.1', '2.2.2.2'],
+    ipWhitelist: ['::1', '172.16.0.0/12'],
+    queryUrlWhitelist: ['github.com'],
+    modules: {
+        directoryTraversal: {
+            enabled: true,
+            excludePaths: /^\/exclude\/$/i
+        },
+    }
+}));
 
-const PORT = process.env.RESERVATION_PORT || 8000;
-const serverStartup = app.listen(PORT, ()=>{
-    console.log(`server listening on port ${PORT}`);
-})
+app.use(bodyParser.json({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/api/reservation', router)
+
+app.post('/recaptcha', async (req, res) => {
+    if (!req.body.captcha)
+      return res.json({ success: false, msg: 'Please select captcha' });
+  
+    // Secret key
+    const secretKey = process.env.CAPTCHA;
+  
+    // Verify URL
+    const query = stringify({
+      secret: secretKey,
+      response: req.body.captcha,
+      remoteip: req.connection.remoteAddress
+    });
+    const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`;
+  
+    // Make a request to verifyURL
+    const body = await axios.get(verifyURL);
+  
+    // If not successful
+    if (body.data.success !== undefined && !body.data.success)
+      return res.json({ success: false, msg: 'Failed captcha verification' });
+  
+    // If successful
+    return res.json({ success: true, msg: 'Captcha passed' });
+  });
+  
+
+const PORT = process.env.PORT || 5001;
 
 const mongooseOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }
-mongoose.connect(process.env.CONNECTION_URL, mongooseOptions, serverStartup)
-//generateDummyTickets()
+
+const handleServerStartup = () => {
+    app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
+}
+async function main() {
+    await mongoose.set('strictQuery', true)
+    await mongoose.connect(process.env.CONNECTION_URL, mongooseOptions, handleServerStartup)
+    await startKafkaProducer();
+}
+
+main()
+

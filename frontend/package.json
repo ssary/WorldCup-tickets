@@ -1,0 +1,61 @@
+{
+  "name": "fifa-2022",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@stripe/react-stripe-js": "^1.16.1",
+    "@stripe/stripe-js": "^1.46.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "lodash": "^4.17.21",
+    "axios": "^1.2.2",
+    "canvasjs-react-charts": "^1.0.5",
+    "font-awesome": "^4.7.0",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.0",
+    "react-credit-card-input": "^1.1.5",
+    "react-credit-cards": "^0.8.3",
+    "react-dom": "^18.2.0",
+    "react-google-recaptcha": "^2.1.0",
+    "react-phone-input": "^1.2.1",
+    "react-phone-number-input": "^3.2.13",
+    "react-icons": "^4.7.1",
+    "react-router-dom": "^6.6.1",
+    "react-scripts": "5.0.1",
+    "styled-components": "^5.3.6",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.7",
+    "@babel/plugin-proposal-export-default-from": "^7.18.10",
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3"
+  }
+}
